@@ -1,0 +1,84 @@
+specificationVersion: "0.1"
+name: Workleap Plans and Pricing
+description: >
+  Workleap offers three subscription tiers for organizations. API access is
+  available starting with the Pro plan. The Standard plan provides the core
+  employee experience suite without programmatic API access. Enterprise pricing
+  is custom for organizations with 250 or more employees.
+url: https://workleap.com/pricing
+plans:
+  - name: Standard
+    description: >
+      Core employee experience platform including performance management,
+      engagement surveys, AI analysis, org chart, goals and OKRs, recognition,
+      1:1 management, integrations catalog, and compensation planning.
+    url: https://workleap.com/pricing
+    price: 4999.00
+    unit: per year
+    currency: USD
+    apiAccess: false
+    features:
+      - Performance management
+      - Engagement surveys
+      - AI analysis
+      - Org chart
+      - Goals and OKRs
+      - Recognition
+      - 1:1 management
+      - Integrations catalog
+      - Compensation planning
+
+  - name: Pro
+    description: >
+      Everything in Standard plus advanced intelligence, compensation
+      benchmarking, pay bands, API access, SAML SSO, custom properties and
+      segments, and personalized onboarding. API access is unlocked at this
+      tier.
+    url: https://workleap.com/pricing
+    price: 11999.00
+    unit: per year
+    currency: USD
+    apiAccess: true
+    features:
+      - All Standard features
+      - Advanced intelligence
+      - Compensation benchmarking
+      - Pay bands
+      - API access
+      - SAML SSO
+      - Custom properties and segments
+      - Personalized onboarding
+
+  - name: Enterprise
+    description: >
+      Custom pricing for organizations with 250 or more employees. Includes
+      all Pro features with enterprise-grade support, dedicated onboarding, and
+      tailored SLAs. Contact sales for a quote.
+    url: https://workleap.com/pricing
+    price: custom
+    unit: custom
+    currency: USD
+    apiAccess: true
+    minimumEmployees: 250
+    features:
+      - All Pro features
+      - Dedicated onboarding
+      - Enterprise support
+      - Custom SLAs
+
+  - name: Manager Agent Add-On
+    description: >
+      An optional add-on available to Pro and Enterprise customers that provides
+      AI-powered proactive insights, performance review drafting, decision
+      assistance, meeting intelligence, and advanced memory for managers.
+    url: https://workleap.com/pricing
+    price: 99.00
+    unit: per manager per month
+    currency: USD
+    apiAccess: false
+    features:
+      - Proactive insights
+      - Performance review drafting
+      - Decision assistance
+      - Meeting intelligence
+      - Advanced memory

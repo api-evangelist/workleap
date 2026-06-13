@@ -1,0 +1,90 @@
+specificationVersion: "1.0"
+name: Workleap FinOps
+description: >
+  FinOps Framework FOCUS-aligned cost and usage data for the Workleap employee
+  experience platform API. Workleap uses annual subscription pricing with no
+  consumption-based API billing. API access is a feature unlock included in the
+  Pro and Enterprise plans; there are no per-request or per-call charges.
+url: https://workleap.com/pricing
+
+framework: FinOps Framework 1.0
+alignment: FOCUS
+
+costModel:
+  type: subscription
+  billingCadence: annual
+  consumptionBased: false
+  description: >
+    Workleap charges a flat annual subscription fee based on plan tier. API
+    access is included as a feature in Pro ($11,999/year) and Enterprise
+    (custom) plans. There are no metered API call charges, overage fees, or
+    per-seat API costs beyond the subscription price.
+
+services:
+  - name: Workleap Pro (API Access Included)
+    sku: workleap-pro
+    description: >
+      Annual Pro plan subscription that includes full REST API access, SAML SSO,
+      custom properties, advanced intelligence, and compensation benchmarking.
+    unitPrice: 11999.00
+    unit: per organization per year
+    currency: USD
+    category: SaaS Subscription
+    apiIncluded: true
+    tags:
+      - Employee Experience
+      - HR Platform
+      - API Access
+
+  - name: Workleap Enterprise (API Access Included)
+    sku: workleap-enterprise
+    description: >
+      Custom annual Enterprise plan for organizations with 250 or more employees.
+      Includes all Pro features plus enterprise support, dedicated onboarding,
+      and custom SLAs. API access is included.
+    unitPrice: custom
+    unit: custom per organization per year
+    currency: USD
+    category: SaaS Subscription
+    apiIncluded: true
+    tags:
+      - Employee Experience
+      - HR Platform
+      - API Access
+      - Enterprise
+
+  - name: Manager Agent Add-On
+    sku: workleap-manager-agent
+    description: >
+      Optional AI-powered Manager Agent add-on priced per manager per month.
+      Does not add API access; supplements Pro/Enterprise with AI insights.
+    unitPrice: 99.00
+    unit: per manager per month
+    currency: USD
+    category: SaaS Add-On
+    apiIncluded: false
+    tags:
+      - AI
+      - Manager Tools
+
+costAllocation:
+  dimensions:
+    - name: Plan Tier
+      values: [Standard, Pro, Enterprise]
+    - name: Product Module
+      values: [Officevibe, Performance, Onboarding, LMS, Skills, Pingboard, Compensation]
+  recommendations:
+    - Allocate annual subscription cost across HR and People Operations cost centers.
+    - Tag API usage to engineering teams integrating Workleap with HRIS systems.
+    - Track Manager Agent seats separately from platform subscription for budget accuracy.
+
+optimization:
+  - description: >
+      Only upgrade to Pro if REST API access is required; Standard plan covers
+      most HR workflows without programmatic API access.
+  - description: >
+      Evaluate actual HRIS sync frequency needs before Enterprise — Pro supports
+      recurring provisioning sync via the API at the Pro price point.
+  - description: >
+      Limit Manager Agent add-on seats to managers who actively use AI-assisted
+      review workflows to control per-seat monthly costs.

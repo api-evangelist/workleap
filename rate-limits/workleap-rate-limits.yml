@@ -1,0 +1,31 @@
+specificationVersion: "0.1"
+name: Workleap API Rate Limits
+description: >
+  Workleap does not publicly document specific numeric rate limits for its REST
+  API. The API uses API key authentication via the workleap-subscription-key
+  header and is subject to standard usage policies. Developers should implement
+  exponential backoff and handle HTTP 429 Too Many Requests responses
+  gracefully. Contact Workleap support for plan-specific rate limit details.
+url: https://docs.api.workleap.com/docs/getting-started
+
+rateLimits:
+  - name: General API Rate Limit
+    description: >
+      Workleap does not publicly specify a numeric rate limit. Exceeding the
+      allowed request frequency will result in an HTTP 429 response. Implement
+      retry logic with exponential backoff when encountering 429 errors.
+    scope: organization
+    limit: unspecified
+    window: unspecified
+    errorCode: 429
+    headers:
+      - name: workleap-subscription-key
+        description: API key used for authentication and rate limit tracking
+
+notes:
+  - Workleap has not published specific requests-per-minute or requests-per-day
+    limits in its public documentation as of June 2026.
+  - Rate limits may vary by subscription plan (Standard, Pro, Enterprise).
+  - For provisioning operations (bulk CSV/JSON sync), scheduling constraints
+    apply based on HRIS sync cadence rather than per-request limits.
+  - Contact Workleap support at help.workleap.com for plan-specific limits.

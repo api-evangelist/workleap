@@ -1,0 +1,82 @@
+aid: workleap
+name: Workleap
+description: >
+  Workleap is an employee experience platform (formerly GSoft/Officevibe) that
+  provides a suite of products covering engagement surveys, performance
+  management, recognition, onboarding, and learning management. The Workleap
+  REST API allows developers and HR teams to automate user provisioning, group
+  management, and organization-wide sync operations with their HRIS. The API
+  also exposes engagement scores, pulse survey results, feedback data, GoodVibes
+  recognition items, and team sentiment analytics collected by the Officevibe
+  product. Authentication uses an API key passed via the
+  workleap-subscription-key header, and API access is available on the Pro and
+  Enterprise subscription plans.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/workleap/refs/heads/main/apis.yml
+created: "2026-06-13"
+modified: "2026-06-13"
+specificationVersion: "0.19"
+tags:
+  - Employee Experience
+  - HR
+  - Engagement
+  - Pulse Surveys
+  - Performance Management
+  - Officevibe
+  - User Provisioning
+  - HRIS
+  - Recognition
+  - Onboarding
+
+apis:
+  - aid: workleap:workleap-api
+    name: Workleap API
+    description: >
+      The Workleap REST API provides programmatic access to user and group
+      management, provisioning workflows, engagement scores, pulse survey
+      feedback, GoodVibes recognition data, and organizational attributes across
+      the Workleap platform. It supports both one-time management actions and
+      recurring HRIS-synced provisioning via JSON or CSV-based connections.
+    humanURL: https://docs.api.workleap.com/docs/getting-started
+    baseURL: https://api.workleap.com
+    tags:
+      - User Management
+      - Group Management
+      - Provisioning
+      - Engagement
+      - Feedback
+      - Recognition
+    properties:
+      - type: Documentation
+        url: https://docs.api.workleap.com/docs/getting-started
+      - type: OpenAPI
+        url: https://docs.api.workleap.com/llms.txt
+
+common:
+  - type: Website
+    url: https://workleap.com
+  - type: Documentation
+    url: https://docs.api.workleap.com/docs/getting-started
+  - type: GitHubOrg
+    url: https://github.com/workleap
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/workleaphq
+  - type: Blog
+    url: https://workleap.com/blog
+  - type: Pricing
+    url: https://workleap.com/pricing
+  - type: StatusPage
+    url: https://status.workleap.com/
+  - type: X
+    url: https://x.com/workleaphq
+  - type: Plans
+    url: plans/workleap-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/workleap-rate-limits.yml
+  - type: FinOps
+    url: finops/workleap-finops.yml
+
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
