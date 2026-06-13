@@ -1,0 +1,238 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "workleap": "https://api.workleap.com/vocabulary#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "User": "schema:Person",
+    "userId": {
+      "@id": "schema:identifier",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "schema:email",
+      "@type": "xsd:string"
+    },
+    "firstName": {
+      "@id": "schema:givenName",
+      "@type": "xsd:string"
+    },
+    "lastName": {
+      "@id": "schema:familyName",
+      "@type": "xsd:string"
+    },
+    "jobTitle": {
+      "@id": "schema:jobTitle",
+      "@type": "xsd:string"
+    },
+    "department": {
+      "@id": "schema:department",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "workleap:userStatus",
+      "@type": "xsd:string"
+    },
+    "managerId": {
+      "@id": "workleap:managerId",
+      "@type": "xsd:string"
+    },
+
+    "Group": "schema:Organization",
+    "groupId": {
+      "@id": "schema:identifier",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "memberCount": {
+      "@id": "workleap:memberCount",
+      "@type": "xsd:integer"
+    },
+
+    "EngagementScore": "workleap:EngagementScore",
+    "TeamEngagementScore": "workleap:TeamEngagementScore",
+    "teamId": {
+      "@id": "workleap:teamId",
+      "@type": "xsd:string"
+    },
+    "teamName": {
+      "@id": "workleap:teamName",
+      "@type": "xsd:string"
+    },
+    "score": {
+      "@id": "workleap:score",
+      "@type": "xsd:decimal"
+    },
+    "responseRate": {
+      "@id": "workleap:responseRate",
+      "@type": "xsd:decimal"
+    },
+    "participantCount": {
+      "@id": "workleap:participantCount",
+      "@type": "xsd:integer"
+    },
+
+    "EngagementMetric": "workleap:EngagementMetric",
+    "metricId": {
+      "@id": "workleap:metricId",
+      "@type": "xsd:string"
+    },
+    "subMetrics": {
+      "@id": "workleap:subMetrics",
+      "@container": "@set"
+    },
+
+    "Feedback": "workleap:Feedback",
+    "feedbackId": {
+      "@id": "schema:identifier",
+      "@type": "xsd:string"
+    },
+    "metric": {
+      "@id": "workleap:metric",
+      "@type": "xsd:string"
+    },
+    "tone": {
+      "@id": "workleap:tone",
+      "@type": "xsd:string"
+    },
+    "message": {
+      "@id": "schema:text",
+      "@type": "xsd:string"
+    },
+    "labels": {
+      "@id": "workleap:labels",
+      "@container": "@set"
+    },
+
+    "FeedbackLabel": "workleap:FeedbackLabel",
+    "labelId": {
+      "@id": "schema:identifier",
+      "@type": "xsd:string"
+    },
+    "color": {
+      "@id": "workleap:color",
+      "@type": "xsd:string"
+    },
+
+    "GoodVibe": "workleap:GoodVibe",
+    "goodVibeId": {
+      "@id": "schema:identifier",
+      "@type": "xsd:string"
+    },
+    "senderId": {
+      "@id": "workleap:senderId",
+      "@type": "xsd:string"
+    },
+    "recipientId": {
+      "@id": "workleap:recipientId",
+      "@type": "xsd:string"
+    },
+    "collectionId": {
+      "@id": "workleap:collectionId",
+      "@type": "xsd:string"
+    },
+
+    "GoodVibeCollection": "workleap:GoodVibeCollection",
+    "isCustom": {
+      "@id": "workleap:isCustom",
+      "@type": "xsd:boolean"
+    },
+
+    "AttributeDefinition": "workleap:AttributeDefinition",
+    "attributeId": {
+      "@id": "schema:identifier",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "schema:additionalType",
+      "@type": "xsd:string"
+    },
+    "isRequired": {
+      "@id": "workleap:isRequired",
+      "@type": "xsd:boolean"
+    },
+    "value": {
+      "@id": "schema:value"
+    },
+
+    "ProvisioningJob": "workleap:ProvisioningJob",
+    "jobId": {
+      "@id": "schema:identifier",
+      "@type": "xsd:string"
+    },
+    "syncMode": {
+      "@id": "workleap:syncMode",
+      "@type": "xsd:string"
+    },
+
+    "createdAt": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "updatedAt": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "scheduledAt": {
+      "@id": "workleap:scheduledAt",
+      "@type": "xsd:dateTime"
+    },
+    "startDate": {
+      "@id": "schema:startDate",
+      "@type": "xsd:date"
+    },
+    "endDate": {
+      "@id": "schema:endDate",
+      "@type": "xsd:date"
+    },
+
+    "users": {
+      "@id": "workleap:users",
+      "@container": "@set"
+    },
+    "groups": {
+      "@id": "workleap:groups",
+      "@container": "@set"
+    },
+    "teams": {
+      "@id": "workleap:teams",
+      "@container": "@set"
+    },
+    "metrics": {
+      "@id": "workleap:metrics",
+      "@container": "@set"
+    },
+    "feedbacks": {
+      "@id": "workleap:feedbacks",
+      "@container": "@set"
+    },
+    "goodVibes": {
+      "@id": "workleap:goodVibes",
+      "@container": "@set"
+    },
+    "attributes": {
+      "@id": "workleap:attributes",
+      "@container": "@set"
+    },
+    "totalCount": {
+      "@id": "workleap:totalCount",
+      "@type": "xsd:integer"
+    },
+    "page": {
+      "@id": "workleap:page",
+      "@type": "xsd:integer"
+    },
+    "pageSize": {
+      "@id": "workleap:pageSize",
+      "@type": "xsd:integer"
+    }
+  }
+}

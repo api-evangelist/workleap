@@ -1,0 +1,28 @@
+{
+  "description": "Example request body for creating a user in Workleap",
+  "endpoint": "POST /public/users",
+  "headers": {
+    "workleap-subscription-key": "your-api-key-here",
+    "Content-Type": "application/json"
+  },
+  "request": {
+    "email": "jane.smith@example.com",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "jobTitle": "Product Manager",
+    "department": "Product",
+    "managerId": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  },
+  "response": {
+    "userId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "email": "jane.smith@example.com",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "status": "active",
+    "jobTitle": "Product Manager",
+    "department": "Product",
+    "managerId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "createdAt": "2026-06-13T10:00:00Z",
+    "updatedAt": "2026-06-13T10:00:00Z"
+  }
+}

@@ -1,0 +1,107 @@
+vocabulary:
+  - term: Workleap
+    definition: >
+      An employee experience platform (formerly GSoft/Officevibe) providing a suite
+      of HR products covering engagement surveys, performance management, recognition,
+      onboarding, and learning management.
+
+  - term: Officevibe
+    definition: >
+      The employee engagement product within Workleap that collects pulse survey
+      results, feedback, and team sentiment analytics.
+
+  - term: Engagement Score
+    definition: >
+      A numerical score (0-10) representing the overall level of employee engagement
+      for a team or organization, calculated from pulse survey responses.
+
+  - term: Engagement Metric
+    definition: >
+      A specific dimension of employee engagement measured by Officevibe, such as
+      happiness, relationship with peers, or personal growth. Each metric may have
+      sub-metrics.
+
+  - term: Pulse Survey
+    definition: >
+      Short, recurring surveys sent to employees to measure engagement, feedback,
+      and sentiment on a regular cadence (typically weekly).
+
+  - term: Feedback
+    definition: >
+      Anonymous employee responses to pulse survey questions, which can be filtered
+      by team, metric, tone, label, and date range.
+
+  - term: Tone
+    definition: >
+      A classification of feedback sentiment, either positive, neutral, or negative,
+      derived from the content of employee responses.
+
+  - term: Feedback Label
+    definition: >
+      Custom tags created by managers to categorize and organize feedback for easier
+      tracking and analysis.
+
+  - term: GoodVibe
+    definition: >
+      A recognition item sent from one employee to another as a way to express
+      appreciation or positive acknowledgment within Workleap.
+
+  - term: GoodVibes Collection
+    definition: >
+      A themed set of GoodVibe types. Workleap provides built-in Officevibe collections
+      as well as the ability to create custom collections.
+
+  - term: Group
+    definition: >
+      An organizational unit within Workleap used to segment users for targeting
+      surveys, reporting, and access control.
+
+  - term: User
+    definition: >
+      An individual employee account within a Workleap organization. Users can be
+      active or deactivated and have associated attributes.
+
+  - term: System Attribute
+    definition: >
+      Metadata fields associated with users in Workleap (e.g., department, job title,
+      manager) used for HRIS synchronization and reporting segmentation.
+
+  - term: Provisioning
+    definition: >
+      The process of creating, updating, or deactivating users in bulk via CSV file
+      upload or JSON payload, typically used to synchronize with an HRIS.
+
+  - term: HRIS
+    definition: >
+      Human Resource Information System. An external system that stores employee data.
+      Workleap supports HRIS synchronization via CSV and JSON provisioning endpoints.
+
+  - term: workleap-subscription-key
+    definition: >
+      The HTTP header name used to pass the API key for authentication on all
+      Workleap API requests.
+
+  - term: Response Rate
+    definition: >
+      The percentage of employees who completed a pulse survey out of the total
+      number invited to participate, used as an indicator of engagement program health.
+
+  - term: Organization
+    definition: >
+      The top-level entity in Workleap representing a company or business unit. All
+      users, groups, and engagement data are scoped to an organization.
+
+  - term: Avatar
+    definition: >
+      A profile image associated with a user account, uploadable via the API using
+      the user's ID or email address as the image filename.
+
+  - term: Pro Plan
+    definition: >
+      A Workleap subscription tier that includes API access for programmatic
+      management of users, groups, and engagement data.
+
+  - term: Enterprise Plan
+    definition: >
+      A Workleap subscription tier that includes full API access including advanced
+      provisioning, analytics, and support features.

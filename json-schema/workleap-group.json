@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.workleap.com/schemas/group",
+  "title": "Workleap Group",
+  "description": "An organizational group within a Workleap organization",
+  "type": "object",
+  "properties": {
+    "groupId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The unique identifier of the group"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the group"
+    },
+    "description": {
+      "type": "string",
+      "description": "The description of the group"
+    },
+    "memberCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of members in the group"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the group was created"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the group was last updated"
+    }
+  },
+  "required": ["groupId", "name"]
+}

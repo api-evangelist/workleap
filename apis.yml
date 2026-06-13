@@ -52,6 +52,8 @@ apis:
         url: https://docs.api.workleap.com/docs/getting-started
       - type: OpenAPI
         url: https://docs.api.workleap.com/llms.txt
+      - type: OpenAPI
+        url: openapi/workleap-workleap-api-openapi.yml
 
 common:
   - type: Website
@@ -76,6 +78,16 @@ common:
     url: rate-limits/workleap-rate-limits.yml
   - type: FinOps
     url: finops/workleap-finops.yml
+  - type: Vocabulary
+    url: vocabulary/workleap-vocabulary.yml
+  - type: JSONLDContext
+    url: json-ld/workleap-context.jsonld
+  - type: JSONSchema
+    url: json-schema/workleap-user.json
+  - type: JSONSchema
+    url: json-schema/workleap-group.json
+  - type: JSONSchema
+    url: json-schema/workleap-feedback.json
 
 maintainers:
   - FN: Kin Lane

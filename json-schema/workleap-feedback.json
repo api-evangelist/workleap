@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.workleap.com/schemas/feedback",
+  "title": "Workleap Feedback",
+  "description": "An employee feedback response from a pulse survey",
+  "type": "object",
+  "properties": {
+    "feedbackId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The unique identifier of the feedback"
+    },
+    "teamId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The team the feedback belongs to"
+    },
+    "teamName": {
+      "type": "string",
+      "description": "The name of the team"
+    },
+    "metric": {
+      "type": "string",
+      "description": "The engagement metric this feedback relates to"
+    },
+    "tone": {
+      "type": "string",
+      "enum": ["positive", "neutral", "negative"],
+      "description": "The tone of the feedback"
+    },
+    "message": {
+      "type": "string",
+      "description": "The feedback message text"
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Custom labels applied to the feedback"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the feedback was created"
+    }
+  },
+  "required": ["feedbackId", "tone"]
+}
