@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/workleap-workleap-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: SubscriptionKey
+  type: apiKey
+  in: header
+  parameter: workleap-subscription-key
+  description: API key for authenticating requests to the Workleap API
+  sources:
+  - openapi/workleap-workleap-api-openapi.yml

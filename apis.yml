@@ -56,6 +56,12 @@ apis:
         url: openapi/workleap-workleap-api-openapi.yml
 
 common:
+  - type: TrustCenter
+    url: security/workleap-trust-center.yml
+  - type: DomainSecurity
+    url: security/workleap-domain-security.yml
+  - type: Authentication
+    url: authentication/workleap-authentication.yml
   - type: Website
     url: https://workleap.com
   - type: Documentation
