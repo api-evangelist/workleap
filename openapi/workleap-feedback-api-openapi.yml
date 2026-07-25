@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: Workleap Attributes Feedback API
+  description: 'The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform. It supports both one-time management actions and recurring HRIS-synced provisioning via JSON or CSV-based connections. Authentication uses an API key passed via the workleap-subscription-key header, and API access is available on the Pro and Enterprise subscription plans.
+
+    '
+  version: 1.0.0
+  contact:
+    url: https://docs.api.workleap.com/docs/getting-started
+  termsOfService: https://workleap.com/legal/terms-of-service
+  license:
+    name: Proprietary
+servers:
+- url: https://api.workleap.com/public
+  description: Workleap Production API
+security:
+- SubscriptionKey: []
+tags:
+- name: Feedback
+  description: Feedback retrieval and management
+paths:
+  /feedbacks/{feedbackId}:
+    get:
+      operationId: getFeedbackById
+      summary: Get feedback
+      description: Get feedback by its unique identifier
+      tags:
+      - Feedback
+      parameters:
+      - name: feedbackId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the feedback
+      responses:
+        '200':
+          description: Successful response with the feedback
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /feedbacks/labels:
+    get:
+      operationId: getFeedbacksLabels
+      summary: Get feedbacks labels
+      description: Get organization's custom feedback labels
+      tags:
+      - Feedback
+      responses:
+        '200':
+          description: Successful response with feedback labels
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  labels:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FeedbackLabel'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /feedbacks/search:
+    post:
+      operationId: searchFeedbacks
+      summary: Search feedbacks
+      description: Filters feedback by team name, metric, tone, label and date range
+      tags:
+      - Feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackSearchRequest'
+      responses:
+        '200':
+          description: Successful response with filtered feedbacks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  feedbacks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Feedback'
+                  totalCount:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  schemas:
+    Feedback:
+      type: object
+      properties:
+        feedbackId:
+          type: string
+          format: uuid
+          description: The unique identifier of the feedback
+        teamId:
+          type: string
+          format: uuid
+          description: The team the feedback belongs to
+        teamName:
+          type: string
+          description: The name of the team
+        metric:
+          type: string
+          description: The engagement metric this feedback relates to
+        tone:
+          type: string
+          enum:
+          - positive
+          - neutral
+          - negative
+          description: The tone of the feedback
+        message:
+          type: string
+          description: The feedback message text
+        labels:
+          type: array
+          items:
+            type: string
+          description: Custom labels applied to the feedback
+        createdAt:
+          type: string
+          format: date-time
+          description: When the feedback was created
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    FeedbackSearchRequest:
+      type: object
+      properties:
+        teamName:
+          type: string
+          description: Filter by team name
+        metric:
+          type: string
+          description: Filter by engagement metric
+        tone:
+          type: string
+          enum:
+          - positive
+          - neutral
+          - negative
+          description: Filter by feedback tone
+        label:
+          type: string
+          description: Filter by custom label
+        startDate:
+          type: string
+          format: date
+          description: Start date for the date range filter
+        endDate:
+          type: string
+          format: date
+          description: End date for the date range filter
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        pageSize:
+          type: integer
+          default: 25
+          description: Number of results per page
+    FeedbackLabel:
+      type: object
+      properties:
+        labelId:
+          type: string
+          format: uuid
+          description: The unique identifier of the label
+        name:
+          type: string
+          description: The name of the label
+        color:
+          type: string
+          description: The color associated with the label
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    SubscriptionKey:
+      type: apiKey
+      in: header
+      name: workleap-subscription-key
+      description: API key for authenticating requests to the Workleap API

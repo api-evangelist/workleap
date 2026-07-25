@@ -1,0 +1,184 @@
+openapi: 3.0.3
+info:
+  title: Workleap Attributes Engagement API
+  description: 'The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform. It supports both one-time management actions and recurring HRIS-synced provisioning via JSON or CSV-based connections. Authentication uses an API key passed via the workleap-subscription-key header, and API access is available on the Pro and Enterprise subscription plans.
+
+    '
+  version: 1.0.0
+  contact:
+    url: https://docs.api.workleap.com/docs/getting-started
+  termsOfService: https://workleap.com/legal/terms-of-service
+  license:
+    name: Proprietary
+servers:
+- url: https://api.workleap.com/public
+  description: Workleap Production API
+security:
+- SubscriptionKey: []
+tags:
+- name: Engagement
+  description: Engagement scores and metrics for teams and organizations
+paths:
+  /engagement/teams:
+    get:
+      operationId: getAllEngagementScores
+      summary: Get engagement scores for all teams
+      description: Get teams engagement scores
+      tags:
+      - Engagement
+      responses:
+        '200':
+          description: Successful response with engagement scores for all teams
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  teams:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TeamEngagementScore'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /engagement/metrics:
+    get:
+      operationId: getEngagementMetrics
+      summary: Get engagement metrics
+      description: Get organization engagement metrics and sub-metrics
+      tags:
+      - Engagement
+      responses:
+        '200':
+          description: Successful response with organization engagement metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metrics:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EngagementMetric'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /engagement/scores:
+    get:
+      operationId: getEngagementScores
+      summary: Get engagement scores
+      description: Get organization engagement scores
+      tags:
+      - Engagement
+      responses:
+        '200':
+          description: Successful response with organization engagement scores
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationEngagementScores'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  schemas:
+    TeamEngagementScore:
+      type: object
+      properties:
+        teamId:
+          type: string
+          format: uuid
+          description: The unique identifier of the team
+        teamName:
+          type: string
+          description: The name of the team
+        score:
+          type: number
+          format: float
+          description: The engagement score (0-10)
+        responseRate:
+          type: number
+          format: float
+          description: The survey response rate (0-100)
+        participantCount:
+          type: integer
+          description: Number of participants in the team
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    EngagementMetric:
+      type: object
+      properties:
+        metricId:
+          type: string
+          description: The unique identifier of the metric
+        name:
+          type: string
+          description: The name of the metric
+        score:
+          type: number
+          format: float
+          description: The metric score (0-10)
+        subMetrics:
+          type: array
+          items:
+            type: object
+            properties:
+              subMetricId:
+                type: string
+              name:
+                type: string
+              score:
+                type: number
+                format: float
+    OrganizationEngagementScores:
+      type: object
+      properties:
+        organizationScore:
+          type: number
+          format: float
+          description: The overall organization engagement score (0-10)
+        responseRate:
+          type: number
+          format: float
+          description: The organization-wide survey response rate (0-100)
+        participantCount:
+          type: integer
+          description: Total number of participants
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    SubscriptionKey:
+      type: apiKey
+      in: header
+      name: workleap-subscription-key
+      description: API key for authenticating requests to the Workleap API

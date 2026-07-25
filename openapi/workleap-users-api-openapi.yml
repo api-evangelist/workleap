@@ -1,0 +1,484 @@
+openapi: 3.0.3
+info:
+  title: Workleap Attributes Users API
+  description: 'The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform. It supports both one-time management actions and recurring HRIS-synced provisioning via JSON or CSV-based connections. Authentication uses an API key passed via the workleap-subscription-key header, and API access is available on the Pro and Enterprise subscription plans.
+
+    '
+  version: 1.0.0
+  contact:
+    url: https://docs.api.workleap.com/docs/getting-started
+  termsOfService: https://workleap.com/legal/terms-of-service
+  license:
+    name: Proprietary
+servers:
+- url: https://api.workleap.com/public
+  description: Workleap Production API
+security:
+- SubscriptionKey: []
+tags:
+- name: Users
+  description: User management and provisioning
+paths:
+  /users/activate:
+    post:
+      operationId: activateUsers
+      summary: Activate users
+      description: Update users state to active
+      tags:
+      - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserStateChangeRequest'
+      responses:
+        '200':
+          description: Users activated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStateChangeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /users:
+    post:
+      operationId: createUser
+      summary: Create a user
+      description: Create a user in an organization
+      tags:
+      - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /users/deactivate:
+    post:
+      operationId: deactivateUsers
+      summary: Deactivate users
+      description: Update users state to deactivated
+      tags:
+      - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserStateChangeRequest'
+      responses:
+        '200':
+          description: Users deactivated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStateChangeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /users/{userId}:
+    get:
+      operationId: getUser
+      summary: Get a user
+      description: Get a user from an organization
+      tags:
+      - Users
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the user
+      responses:
+        '200':
+          description: Successful response with the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateUser
+      summary: Update a user
+      description: Update a user in an organization
+      tags:
+      - Users
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteUser
+      summary: Delete a user
+      description: Delete a user in an organization
+      tags:
+      - Users
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the user
+      responses:
+        '204':
+          description: User deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /users/search:
+    post:
+      operationId: searchUsers
+      summary: Search users
+      description: Search users from an organization
+      tags:
+      - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSearchRequest'
+      responses:
+        '200':
+          description: Successful response with matching users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  totalCount:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /users/{userId}/avatar:
+    put:
+      operationId: updateUserAvatar
+      summary: Update a user avatar
+      description: Upload an avatar for a user identified by user ID
+      tags:
+      - Users
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the user
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The avatar image file
+              required:
+              - image
+      responses:
+        '200':
+          description: Avatar updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /users/avatar:
+    put:
+      operationId: updateUserAvatarByEmail
+      summary: Update a user avatar by email
+      description: Upload an avatar for a user identified by the image filename (email address)
+      tags:
+      - Users
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The avatar image file named after the user's email address
+              required:
+              - image
+      responses:
+        '200':
+          description: Avatar updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Conflict:
+      description: Conflict - resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    UserStateChangeRequest:
+      type: object
+      required:
+      - userIds
+      properties:
+        userIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of user IDs to activate or deactivate
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    UserSearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Search query for user name or email
+        status:
+          type: string
+          enum:
+          - active
+          - deactivated
+          description: Filter by user status
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        pageSize:
+          type: integer
+          default: 25
+          description: Number of results per page
+    UpdateUserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: The unique identifier of the user
+        email:
+          type: string
+          format: email
+          description: The user's email address
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        status:
+          type: string
+          enum:
+          - active
+          - deactivated
+          description: The user's account status
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
+        createdAt:
+          type: string
+          format: date-time
+          description: When the user was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the user was last updated
+    CreateUserRequest:
+      type: object
+      required:
+      - email
+      - firstName
+      - lastName
+      properties:
+        email:
+          type: string
+          format: email
+          description: The user's email address
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
+    UserStateChangeResponse:
+      type: object
+      properties:
+        succeeded:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs that were successfully updated
+        failed:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+                format: uuid
+              reason:
+                type: string
+  securitySchemes:
+    SubscriptionKey:
+      type: apiKey
+      in: header
+      name: workleap-subscription-key
+      description: API key for authenticating requests to the Workleap API

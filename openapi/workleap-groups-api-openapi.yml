@@ -1,0 +1,326 @@
+openapi: 3.0.3
+info:
+  title: Workleap Attributes Groups API
+  description: 'The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform. It supports both one-time management actions and recurring HRIS-synced provisioning via JSON or CSV-based connections. Authentication uses an API key passed via the workleap-subscription-key header, and API access is available on the Pro and Enterprise subscription plans.
+
+    '
+  version: 1.0.0
+  contact:
+    url: https://docs.api.workleap.com/docs/getting-started
+  termsOfService: https://workleap.com/legal/terms-of-service
+  license:
+    name: Proprietary
+servers:
+- url: https://api.workleap.com/public
+  description: Workleap Production API
+security:
+- SubscriptionKey: []
+tags:
+- name: Groups
+  description: Group management within an organization
+paths:
+  /groups:
+    post:
+      operationId: createGroup
+      summary: Create a group
+      description: Create a group in an organization
+      tags:
+      - Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroupRequest'
+      responses:
+        '201':
+          description: Group created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /groups/search:
+    post:
+      operationId: searchGroups
+      summary: Search groups
+      description: Search groups from an organization
+      tags:
+      - Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupSearchRequest'
+      responses:
+        '200':
+          description: Successful response with matching groups
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Group'
+                  totalCount:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /groups/{groupId}:
+    get:
+      operationId: getGroup
+      summary: Get a group
+      description: Get a group from an organization
+      tags:
+      - Groups
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the group
+      responses:
+        '200':
+          description: Successful response with the group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateGroup
+      summary: Update a group
+      description: Update a group in an organization
+      tags:
+      - Groups
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGroupRequest'
+      responses:
+        '200':
+          description: Group updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteGroup
+      summary: Delete a group
+      description: Delete a group in an organization
+      tags:
+      - Groups
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the group
+      responses:
+        '204':
+          description: Group deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /groups/{groupId}/membership:
+    patch:
+      operationId: modifyGroupMembership
+      summary: Modify group membership
+      description: Add or remove users from a group using PATCH operations
+      tags:
+      - Groups
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupMembershipRequest'
+      responses:
+        '200':
+          description: Group membership updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    CreateGroupRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: The name of the group
+        description:
+          type: string
+          description: The description of the group
+    GroupMembershipRequest:
+      type: object
+      properties:
+        add:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to add to the group
+        remove:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to remove from the group
+    UpdateGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The updated name of the group
+        description:
+          type: string
+          description: The updated description of the group
+    Group:
+      type: object
+      properties:
+        groupId:
+          type: string
+          format: uuid
+          description: The unique identifier of the group
+        name:
+          type: string
+          description: The name of the group
+        description:
+          type: string
+          description: The description of the group
+        memberCount:
+          type: integer
+          description: Number of members in the group
+        createdAt:
+          type: string
+          format: date-time
+          description: When the group was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the group was last updated
+    GroupSearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Search query for group name
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        pageSize:
+          type: integer
+          default: 25
+          description: Number of results per page
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    SubscriptionKey:
+      type: apiKey
+      in: header
+      name: workleap-subscription-key
+      description: API key for authenticating requests to the Workleap API

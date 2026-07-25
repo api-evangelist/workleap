@@ -1,0 +1,185 @@
+openapi: 3.0.3
+info:
+  title: Workleap Attributes Provisioning API
+  description: 'The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform. It supports both one-time management actions and recurring HRIS-synced provisioning via JSON or CSV-based connections. Authentication uses an API key passed via the workleap-subscription-key header, and API access is available on the Pro and Enterprise subscription plans.
+
+    '
+  version: 1.0.0
+  contact:
+    url: https://docs.api.workleap.com/docs/getting-started
+  termsOfService: https://workleap.com/legal/terms-of-service
+  license:
+    name: Proprietary
+servers:
+- url: https://api.workleap.com/public
+  description: Workleap Production API
+security:
+- SubscriptionKey: []
+tags:
+- name: Provisioning
+  description: CSV and JSON-based provisioning workflows
+paths:
+  /provisioning/csv:
+    post:
+      operationId: processCsvProvisioning
+      summary: Schedule a csv provisioning
+      description: Process files and schedule a csv provisioning for an organization
+      tags:
+      - Provisioning
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The CSV file containing user provisioning data
+              required:
+              - file
+      responses:
+        '202':
+          description: CSV provisioning scheduled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /provisioning/json:
+    post:
+      operationId: processJsonProvisioning
+      summary: Schedule a json provisioning
+      description: Process json payload and schedule provisioning for an organization
+      tags:
+      - Provisioning
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonProvisioningRequest'
+      responses:
+        '202':
+          description: JSON provisioning scheduled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisioningResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    CreateUserRequest:
+      type: object
+      required:
+      - email
+      - firstName
+      - lastName
+      properties:
+        email:
+          type: string
+          format: email
+          description: The user's email address
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
+    ProvisioningResponse:
+      type: object
+      properties:
+        jobId:
+          type: string
+          format: uuid
+          description: The unique identifier of the provisioning job
+        status:
+          type: string
+          enum:
+          - scheduled
+          - processing
+          - completed
+          - failed
+          description: The current status of the provisioning job
+        scheduledAt:
+          type: string
+          format: date-time
+          description: When the provisioning was scheduled
+    JsonProvisioningRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateUserRequest'
+          description: List of users to provision
+        syncMode:
+          type: string
+          enum:
+          - full
+          - incremental
+          description: Whether to do a full sync or incremental update
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    SubscriptionKey:
+      type: apiKey
+      in: header
+      name: workleap-subscription-key
+      description: API key for authenticating requests to the Workleap API

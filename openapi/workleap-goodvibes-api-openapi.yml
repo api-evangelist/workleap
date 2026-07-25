@@ -1,0 +1,204 @@
+openapi: 3.0.3
+info:
+  title: Workleap Attributes GoodVibes API
+  description: 'The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform. It supports both one-time management actions and recurring HRIS-synced provisioning via JSON or CSV-based connections. Authentication uses an API key passed via the workleap-subscription-key header, and API access is available on the Pro and Enterprise subscription plans.
+
+    '
+  version: 1.0.0
+  contact:
+    url: https://docs.api.workleap.com/docs/getting-started
+  termsOfService: https://workleap.com/legal/terms-of-service
+  license:
+    name: Proprietary
+servers:
+- url: https://api.workleap.com/public
+  description: Workleap Production API
+security:
+- SubscriptionKey: []
+tags:
+- name: GoodVibes
+  description: GoodVibes recognition items and collections
+paths:
+  /goodvibes/{goodVibeId}:
+    get:
+      operationId: getGoodVibe
+      summary: Get GoodVibe
+      description: Get GoodVibe by Id
+      tags:
+      - GoodVibes
+      parameters:
+      - name: goodVibeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique identifier of the GoodVibe
+      responses:
+        '200':
+          description: Successful response with the GoodVibe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodVibe'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /goodvibes:
+    get:
+      operationId: getGoodVibes
+      summary: Get GoodVibes
+      description: Get GoodVibes with filters
+      tags:
+      - GoodVibes
+      parameters:
+      - name: teamId
+        in: query
+        schema:
+          type: string
+        description: Filter GoodVibes by team ID
+      - name: startDate
+        in: query
+        schema:
+          type: string
+          format: date
+        description: Start date for filtering GoodVibes
+      - name: endDate
+        in: query
+        schema:
+          type: string
+          format: date
+        description: End date for filtering GoodVibes
+      responses:
+        '200':
+          description: Successful response with GoodVibes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  goodVibes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GoodVibe'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /goodvibes/collections:
+    get:
+      operationId: getGoodVibesCollections
+      summary: Get GoodVibes Collections
+      description: Get Officevibe and Custom GoodVibes Collections
+      tags:
+      - GoodVibes
+      responses:
+        '200':
+          description: Successful response with GoodVibes collections
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  officevibe:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GoodVibeCollection'
+                  custom:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GoodVibeCollection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    GoodVibe:
+      type: object
+      properties:
+        goodVibeId:
+          type: string
+          format: uuid
+          description: The unique identifier of the GoodVibe
+        senderId:
+          type: string
+          format: uuid
+          description: The user ID of the sender
+        recipientId:
+          type: string
+          format: uuid
+          description: The user ID of the recipient
+        collectionId:
+          type: string
+          format: uuid
+          description: The collection this GoodVibe belongs to
+        message:
+          type: string
+          description: The GoodVibe message
+        createdAt:
+          type: string
+          format: date-time
+          description: When the GoodVibe was created
+    GoodVibeCollection:
+      type: object
+      properties:
+        collectionId:
+          type: string
+          format: uuid
+          description: The unique identifier of the collection
+        name:
+          type: string
+          description: The name of the collection
+        description:
+          type: string
+          description: The description of the collection
+        isCustom:
+          type: boolean
+          description: Whether this is a custom or Officevibe collection
+  responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    SubscriptionKey:
+      type: apiKey
+      in: header
+      name: workleap-subscription-key
+      description: API key for authenticating requests to the Workleap API
