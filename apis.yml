@@ -12,7 +12,20 @@ description: >
   workleap-subscription-key header, and API access is available on the Pro and
   Enterprise subscription plans.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/workleap.png
 url: https://raw.githubusercontent.com/api-evangelist/workleap/refs/heads/main/apis.yml
 created: "2026-06-13"
 modified: "2026-06-13"
@@ -30,31 +43,90 @@ tags:
   - Onboarding
 
 apis:
-  - aid: workleap:workleap-api
-    name: Workleap API
-    description: >
-      The Workleap REST API provides programmatic access to user and group
-      management, provisioning workflows, engagement scores, pulse survey
-      feedback, GoodVibes recognition data, and organizational attributes across
-      the Workleap platform. It supports both one-time management actions and
-      recurring HRIS-synced provisioning via JSON or CSV-based connections.
-    humanURL: https://docs.api.workleap.com/docs/getting-started
-    baseURL: https://api.workleap.com
-    tags:
-      - User Management
-      - Group Management
-      - Provisioning
-      - Engagement
-      - Feedback
-      - Recognition
-    properties:
-      - type: Documentation
-        url: https://docs.api.workleap.com/docs/getting-started
-      - type: OpenAPI
-        url: https://docs.api.workleap.com/llms.txt
-      - type: OpenAPI
-        url: openapi/workleap-workleap-api-openapi.yml
-
+- aid: workleap:workleap-attributes-api
+  name: Workleap Attributes API
+  description: User and system attribute management
+  humanURL: https://docs.api.workleap.com/docs/getting-started
+  baseURL: https://api.workleap.com
+  tags:
+  - Attributes
+  properties:
+  - type: OpenAPI
+    url: openapi/workleap-attributes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.api.workleap.com/docs/getting-started
+- aid: workleap:workleap-engagement-api
+  name: Workleap Engagement API
+  description: Engagement scores and metrics for teams and organizations
+  humanURL: https://docs.api.workleap.com/docs/getting-started
+  baseURL: https://api.workleap.com
+  tags:
+  - Engagement
+  properties:
+  - type: OpenAPI
+    url: openapi/workleap-engagement-api-openapi.yml
+  - type: Documentation
+    url: https://docs.api.workleap.com/docs/getting-started
+- aid: workleap:workleap-feedback-api
+  name: Workleap Feedback API
+  description: Feedback retrieval and management
+  humanURL: https://docs.api.workleap.com/docs/getting-started
+  baseURL: https://api.workleap.com
+  tags:
+  - Feedback
+  properties:
+  - type: OpenAPI
+    url: openapi/workleap-feedback-api-openapi.yml
+  - type: Documentation
+    url: https://docs.api.workleap.com/docs/getting-started
+- aid: workleap:workleap-goodvibes-api
+  name: Workleap GoodVibes API
+  description: GoodVibes recognition items and collections
+  humanURL: https://docs.api.workleap.com/docs/getting-started
+  baseURL: https://api.workleap.com
+  tags:
+  - GoodVibes
+  properties:
+  - type: OpenAPI
+    url: openapi/workleap-goodvibes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.api.workleap.com/docs/getting-started
+- aid: workleap:workleap-groups-api
+  name: Workleap Groups API
+  description: Group management within an organization
+  humanURL: https://docs.api.workleap.com/docs/getting-started
+  baseURL: https://api.workleap.com
+  tags:
+  - Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/workleap-groups-api-openapi.yml
+  - type: Documentation
+    url: https://docs.api.workleap.com/docs/getting-started
+- aid: workleap:workleap-provisioning-api
+  name: Workleap Provisioning API
+  description: CSV and JSON-based provisioning workflows
+  humanURL: https://docs.api.workleap.com/docs/getting-started
+  baseURL: https://api.workleap.com
+  tags:
+  - Provisioning
+  properties:
+  - type: OpenAPI
+    url: openapi/workleap-provisioning-api-openapi.yml
+  - type: Documentation
+    url: https://docs.api.workleap.com/docs/getting-started
+- aid: workleap:workleap-users-api
+  name: Workleap Users API
+  description: User management and provisioning
+  humanURL: https://docs.api.workleap.com/docs/getting-started
+  baseURL: https://api.workleap.com
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/workleap-users-api-openapi.yml
+  - type: Documentation
+    url: https://docs.api.workleap.com/docs/getting-started
 common:
   - type: AgenticAccess
     url: agentic-access/workleap-agentic-access.yml
