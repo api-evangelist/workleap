@@ -1,0 +1,26 @@
+{
+  "provider": "workleap",
+  "sources": [
+    "workleap-attributes-api-openapi.yml",
+    "workleap-engagement-api-openapi.yml",
+    "workleap-feedback-api-openapi.yml",
+    "workleap-goodvibes-api-openapi.yml",
+    "workleap-groups-api-openapi.yml",
+    "workleap-provisioning-api-openapi.yml",
+    "workleap-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "workleap-attributes-api-openapi.yml",
+    "workleap-engagement-api-openapi.yml",
+    "workleap-feedback-api-openapi.yml",
+    "workleap-goodvibes-api-openapi.yml",
+    "workleap-groups-api-openapi.yml",
+    "workleap-provisioning-api-openapi.yml",
+    "workleap-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

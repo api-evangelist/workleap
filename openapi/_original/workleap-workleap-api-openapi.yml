@@ -1,0 +1,1420 @@
+openapi: 3.0.3
+info:
+  title: Workleap API
+  description: >
+    The Workleap REST API provides programmatic access to user and group management,
+    provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition
+    data, and organizational attributes across the Workleap platform. It supports both
+    one-time management actions and recurring HRIS-synced provisioning via JSON or
+    CSV-based connections. Authentication uses an API key passed via the
+    workleap-subscription-key header, and API access is available on the Pro and
+    Enterprise subscription plans.
+  version: "1.0.0"
+  contact:
+    url: https://docs.api.workleap.com/docs/getting-started
+  termsOfService: https://workleap.com/legal/terms-of-service
+  license:
+    name: Proprietary
+servers:
+  - url: https://api.workleap.com/public
+    description: Workleap Production API
+tags:
+  - name: Engagement
+    description: Engagement scores and metrics for teams and organizations
+  - name: Feedback
+    description: Feedback retrieval and management
+  - name: GoodVibes
+    description: GoodVibes recognition items and collections
+  - name: Groups
+    description: Group management within an organization
+  - name: Users
+    description: User management and provisioning
+  - name: Attributes
+    description: User and system attribute management
+  - name: Provisioning
+    description: CSV and JSON-based provisioning workflows
+security:
+  - SubscriptionKey: []
+paths:
+  /engagement/teams:
+    get:
+      operationId: getAllEngagementScores
+      summary: Get engagement scores for all teams
+      description: Get teams engagement scores
+      tags:
+        - Engagement
+      responses:
+        "200":
+          description: Successful response with engagement scores for all teams
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  teams:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TeamEngagementScore"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /engagement/metrics:
+    get:
+      operationId: getEngagementMetrics
+      summary: Get engagement metrics
+      description: Get organization engagement metrics and sub-metrics
+      tags:
+        - Engagement
+      responses:
+        "200":
+          description: Successful response with organization engagement metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metrics:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/EngagementMetric"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /engagement/scores:
+    get:
+      operationId: getEngagementScores
+      summary: Get engagement scores
+      description: Get organization engagement scores
+      tags:
+        - Engagement
+      responses:
+        "200":
+          description: Successful response with organization engagement scores
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationEngagementScores"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /feedbacks/{feedbackId}:
+    get:
+      operationId: getFeedbackById
+      summary: Get feedback
+      description: Get feedback by its unique identifier
+      tags:
+        - Feedback
+      parameters:
+        - name: feedbackId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the feedback
+      responses:
+        "200":
+          description: Successful response with the feedback
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Feedback"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /feedbacks/labels:
+    get:
+      operationId: getFeedbacksLabels
+      summary: Get feedbacks labels
+      description: Get organization's custom feedback labels
+      tags:
+        - Feedback
+      responses:
+        "200":
+          description: Successful response with feedback labels
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  labels:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FeedbackLabel"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /feedbacks/search:
+    post:
+      operationId: searchFeedbacks
+      summary: Search feedbacks
+      description: Filters feedback by team name, metric, tone, label and date range
+      tags:
+        - Feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeedbackSearchRequest"
+      responses:
+        "200":
+          description: Successful response with filtered feedbacks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  feedbacks:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Feedback"
+                  totalCount:
+                    type: integer
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /goodvibes/{goodVibeId}:
+    get:
+      operationId: getGoodVibe
+      summary: Get GoodVibe
+      description: Get GoodVibe by Id
+      tags:
+        - GoodVibes
+      parameters:
+        - name: goodVibeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the GoodVibe
+      responses:
+        "200":
+          description: Successful response with the GoodVibe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GoodVibe"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /goodvibes:
+    get:
+      operationId: getGoodVibes
+      summary: Get GoodVibes
+      description: Get GoodVibes with filters
+      tags:
+        - GoodVibes
+      parameters:
+        - name: teamId
+          in: query
+          schema:
+            type: string
+          description: Filter GoodVibes by team ID
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Start date for filtering GoodVibes
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date
+          description: End date for filtering GoodVibes
+      responses:
+        "200":
+          description: Successful response with GoodVibes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  goodVibes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/GoodVibe"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /goodvibes/collections:
+    get:
+      operationId: getGoodVibesCollections
+      summary: Get GoodVibes Collections
+      description: Get Officevibe and Custom GoodVibes Collections
+      tags:
+        - GoodVibes
+      responses:
+        "200":
+          description: Successful response with GoodVibes collections
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  officevibe:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/GoodVibeCollection"
+                  custom:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/GoodVibeCollection"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /attributes:
+    get:
+      operationId: getAttributeDefinitions
+      summary: Get system attribute values
+      description: Get attributes for an organization
+      tags:
+        - Attributes
+      responses:
+        "200":
+          description: Successful response with system attributes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attributes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AttributeDefinition"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /groups:
+    post:
+      operationId: createGroup
+      summary: Create a group
+      description: Create a group in an organization
+      tags:
+        - Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGroupRequest"
+      responses:
+        "201":
+          description: Group created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /groups/search:
+    post:
+      operationId: searchGroups
+      summary: Search groups
+      description: Search groups from an organization
+      tags:
+        - Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupSearchRequest"
+      responses:
+        "200":
+          description: Successful response with matching groups
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  groups:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Group"
+                  totalCount:
+                    type: integer
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /groups/{groupId}:
+    get:
+      operationId: getGroup
+      summary: Get a group
+      description: Get a group from an organization
+      tags:
+        - Groups
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the group
+      responses:
+        "200":
+          description: Successful response with the group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      operationId: updateGroup
+      summary: Update a group
+      description: Update a group in an organization
+      tags:
+        - Groups
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGroupRequest"
+      responses:
+        "200":
+          description: Group updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      operationId: deleteGroup
+      summary: Delete a group
+      description: Delete a group in an organization
+      tags:
+        - Groups
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the group
+      responses:
+        "204":
+          description: Group deleted successfully
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /groups/{groupId}/membership:
+    patch:
+      operationId: modifyGroupMembership
+      summary: Modify group membership
+      description: Add or remove users from a group using PATCH operations
+      tags:
+        - Groups
+      parameters:
+        - name: groupId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupMembershipRequest"
+      responses:
+        "200":
+          description: Group membership updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /provisioning/csv:
+    post:
+      operationId: processCsvProvisioning
+      summary: Schedule a csv provisioning
+      description: Process files and schedule a csv provisioning for an organization
+      tags:
+        - Provisioning
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The CSV file containing user provisioning data
+              required:
+                - file
+      responses:
+        "202":
+          description: CSV provisioning scheduled successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisioningResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /provisioning/json:
+    post:
+      operationId: processJsonProvisioning
+      summary: Schedule a json provisioning
+      description: Process json payload and schedule provisioning for an organization
+      tags:
+        - Provisioning
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JsonProvisioningRequest"
+      responses:
+        "202":
+          description: JSON provisioning scheduled successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProvisioningResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /users/activate:
+    post:
+      operationId: activateUsers
+      summary: Activate users
+      description: Update users state to active
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserStateChangeRequest"
+      responses:
+        "200":
+          description: Users activated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserStateChangeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /users:
+    post:
+      operationId: createUser
+      summary: Create a user
+      description: Create a user in an organization
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /users/deactivate:
+    post:
+      operationId: deactivateUsers
+      summary: Deactivate users
+      description: Update users state to deactivated
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserStateChangeRequest"
+      responses:
+        "200":
+          description: Users deactivated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserStateChangeResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /users/{userId}:
+    get:
+      operationId: getUser
+      summary: Get a user
+      description: Get a user from an organization
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the user
+      responses:
+        "200":
+          description: Successful response with the user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      operationId: updateUser
+      summary: Update a user
+      description: Update a user in an organization
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRequest"
+      responses:
+        "200":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      operationId: deleteUser
+      summary: Delete a user
+      description: Delete a user in an organization
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the user
+      responses:
+        "204":
+          description: User deleted successfully
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /users/{userId}/attributes:
+    get:
+      operationId: getUserAttributes
+      summary: Get a user system attribute values
+      description: Get system attributes for a user
+      tags:
+        - Attributes
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the user
+      responses:
+        "200":
+          description: Successful response with user attributes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attributes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UserAttribute"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      operationId: modifyUserAttributes
+      summary: Modify user system attributes
+      description: Modify a user's system attributes in an organization
+      tags:
+        - Attributes
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attributes:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/UserAttributePatch"
+      responses:
+        "200":
+          description: User attributes updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attributes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UserAttribute"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /users/search:
+    post:
+      operationId: searchUsers
+      summary: Search users
+      description: Search users from an organization
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserSearchRequest"
+      responses:
+        "200":
+          description: Successful response with matching users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+                  totalCount:
+                    type: integer
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /users/{userId}/avatar:
+    put:
+      operationId: updateUserAvatar
+      summary: Update a user avatar
+      description: Upload an avatar for a user identified by user ID
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier of the user
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The avatar image file
+              required:
+                - image
+      responses:
+        "200":
+          description: Avatar updated successfully
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /users/avatar:
+    put:
+      operationId: updateUserAvatarByEmail
+      summary: Update a user avatar by email
+      description: Upload an avatar for a user identified by the image filename (email address)
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: The avatar image file named after the user's email address
+              required:
+                - image
+      responses:
+        "200":
+          description: Avatar updated successfully
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+components:
+  securitySchemes:
+    SubscriptionKey:
+      type: apiKey
+      in: header
+      name: workleap-subscription-key
+      description: API key for authenticating requests to the Workleap API
+  schemas:
+    TeamEngagementScore:
+      type: object
+      properties:
+        teamId:
+          type: string
+          format: uuid
+          description: The unique identifier of the team
+        teamName:
+          type: string
+          description: The name of the team
+        score:
+          type: number
+          format: float
+          description: The engagement score (0-10)
+        responseRate:
+          type: number
+          format: float
+          description: The survey response rate (0-100)
+        participantCount:
+          type: integer
+          description: Number of participants in the team
+    EngagementMetric:
+      type: object
+      properties:
+        metricId:
+          type: string
+          description: The unique identifier of the metric
+        name:
+          type: string
+          description: The name of the metric
+        score:
+          type: number
+          format: float
+          description: The metric score (0-10)
+        subMetrics:
+          type: array
+          items:
+            type: object
+            properties:
+              subMetricId:
+                type: string
+              name:
+                type: string
+              score:
+                type: number
+                format: float
+    OrganizationEngagementScores:
+      type: object
+      properties:
+        organizationScore:
+          type: number
+          format: float
+          description: The overall organization engagement score (0-10)
+        responseRate:
+          type: number
+          format: float
+          description: The organization-wide survey response rate (0-100)
+        participantCount:
+          type: integer
+          description: Total number of participants
+    Feedback:
+      type: object
+      properties:
+        feedbackId:
+          type: string
+          format: uuid
+          description: The unique identifier of the feedback
+        teamId:
+          type: string
+          format: uuid
+          description: The team the feedback belongs to
+        teamName:
+          type: string
+          description: The name of the team
+        metric:
+          type: string
+          description: The engagement metric this feedback relates to
+        tone:
+          type: string
+          enum:
+            - positive
+            - neutral
+            - negative
+          description: The tone of the feedback
+        message:
+          type: string
+          description: The feedback message text
+        labels:
+          type: array
+          items:
+            type: string
+          description: Custom labels applied to the feedback
+        createdAt:
+          type: string
+          format: date-time
+          description: When the feedback was created
+    FeedbackLabel:
+      type: object
+      properties:
+        labelId:
+          type: string
+          format: uuid
+          description: The unique identifier of the label
+        name:
+          type: string
+          description: The name of the label
+        color:
+          type: string
+          description: The color associated with the label
+    FeedbackSearchRequest:
+      type: object
+      properties:
+        teamName:
+          type: string
+          description: Filter by team name
+        metric:
+          type: string
+          description: Filter by engagement metric
+        tone:
+          type: string
+          enum:
+            - positive
+            - neutral
+            - negative
+          description: Filter by feedback tone
+        label:
+          type: string
+          description: Filter by custom label
+        startDate:
+          type: string
+          format: date
+          description: Start date for the date range filter
+        endDate:
+          type: string
+          format: date
+          description: End date for the date range filter
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        pageSize:
+          type: integer
+          default: 25
+          description: Number of results per page
+    GoodVibe:
+      type: object
+      properties:
+        goodVibeId:
+          type: string
+          format: uuid
+          description: The unique identifier of the GoodVibe
+        senderId:
+          type: string
+          format: uuid
+          description: The user ID of the sender
+        recipientId:
+          type: string
+          format: uuid
+          description: The user ID of the recipient
+        collectionId:
+          type: string
+          format: uuid
+          description: The collection this GoodVibe belongs to
+        message:
+          type: string
+          description: The GoodVibe message
+        createdAt:
+          type: string
+          format: date-time
+          description: When the GoodVibe was created
+    GoodVibeCollection:
+      type: object
+      properties:
+        collectionId:
+          type: string
+          format: uuid
+          description: The unique identifier of the collection
+        name:
+          type: string
+          description: The name of the collection
+        description:
+          type: string
+          description: The description of the collection
+        isCustom:
+          type: boolean
+          description: Whether this is a custom or Officevibe collection
+    AttributeDefinition:
+      type: object
+      properties:
+        attributeId:
+          type: string
+          description: The unique identifier of the attribute
+        name:
+          type: string
+          description: The name of the attribute
+        type:
+          type: string
+          enum:
+            - string
+            - number
+            - boolean
+            - date
+          description: The data type of the attribute
+        isRequired:
+          type: boolean
+          description: Whether this attribute is required
+    Group:
+      type: object
+      properties:
+        groupId:
+          type: string
+          format: uuid
+          description: The unique identifier of the group
+        name:
+          type: string
+          description: The name of the group
+        description:
+          type: string
+          description: The description of the group
+        memberCount:
+          type: integer
+          description: Number of members in the group
+        createdAt:
+          type: string
+          format: date-time
+          description: When the group was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the group was last updated
+    CreateGroupRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name of the group
+        description:
+          type: string
+          description: The description of the group
+    UpdateGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The updated name of the group
+        description:
+          type: string
+          description: The updated description of the group
+    GroupSearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Search query for group name
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        pageSize:
+          type: integer
+          default: 25
+          description: Number of results per page
+    GroupMembershipRequest:
+      type: object
+      properties:
+        add:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to add to the group
+        remove:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to remove from the group
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: The unique identifier of the user
+        email:
+          type: string
+          format: email
+          description: The user's email address
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        status:
+          type: string
+          enum:
+            - active
+            - deactivated
+          description: The user's account status
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
+        createdAt:
+          type: string
+          format: date-time
+          description: When the user was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the user was last updated
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+        - firstName
+        - lastName
+      properties:
+        email:
+          type: string
+          format: email
+          description: The user's email address
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
+    UpdateUserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
+    UserStateChangeRequest:
+      type: object
+      required:
+        - userIds
+      properties:
+        userIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of user IDs to activate or deactivate
+    UserStateChangeResponse:
+      type: object
+      properties:
+        succeeded:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs that were successfully updated
+        failed:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+                format: uuid
+              reason:
+                type: string
+    UserSearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Search query for user name or email
+        status:
+          type: string
+          enum:
+            - active
+            - deactivated
+          description: Filter by user status
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        pageSize:
+          type: integer
+          default: 25
+          description: Number of results per page
+    UserAttribute:
+      type: object
+      properties:
+        attributeId:
+          type: string
+          description: The unique identifier of the attribute
+        name:
+          type: string
+          description: The name of the attribute
+        value:
+          description: The value of the attribute (type varies)
+    UserAttributePatch:
+      type: object
+      required:
+        - attributeId
+        - value
+      properties:
+        attributeId:
+          type: string
+          description: The unique identifier of the attribute to update
+        value:
+          description: The new value for the attribute
+    ProvisioningResponse:
+      type: object
+      properties:
+        jobId:
+          type: string
+          format: uuid
+          description: The unique identifier of the provisioning job
+        status:
+          type: string
+          enum:
+            - scheduled
+            - processing
+            - completed
+            - failed
+          description: The current status of the provisioning job
+        scheduledAt:
+          type: string
+          format: date-time
+          description: When the provisioning was scheduled
+    JsonProvisioningRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateUserRequest"
+          description: List of users to provision
+        syncMode:
+          type: string
+          enum:
+            - full
+            - incremental
+          description: Whether to do a full sync or incremental update
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Conflict:
+      description: Conflict - resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
