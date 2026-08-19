@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Workleap Attributes API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "workleap-subscription-key",
+      "value": "{{workleap-subscription-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Attributes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get system attribute values",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/attributes"
+          },
+          "docs": "Get attributes for an organization"
+        },
+        {
+          "info": {
+            "name": "Get a user system attribute values",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/users/:userId/attributes",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the user"
+              }
+            ]
+          },
+          "docs": "Get system attributes for a user"
+        },
+        {
+          "info": {
+            "name": "Modify user system attributes",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.workleap.com/public/users/:userId/attributes",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the user"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modify a user's system attributes in an organization"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

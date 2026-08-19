@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Workleap Attributes Feedback API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "workleap-subscription-key",
+      "value": "{{workleap-subscription-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Feedback",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/feedbacks/:feedbackId",
+            "params": [
+              {
+                "name": "feedbackId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the feedback"
+              }
+            ]
+          },
+          "docs": "Get feedback by its unique identifier"
+        },
+        {
+          "info": {
+            "name": "Get feedbacks labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/feedbacks/labels"
+          },
+          "docs": "Get organization's custom feedback labels"
+        },
+        {
+          "info": {
+            "name": "Search feedbacks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.workleap.com/public/feedbacks/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Filters feedback by team name, metric, tone, label and date range"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

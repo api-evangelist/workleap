@@ -1,0 +1,87 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Workleap Attributes GoodVibes API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "workleap-subscription-key",
+      "value": "{{workleap-subscription-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "GoodVibes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get GoodVibe",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/goodvibes/:goodVibeId",
+            "params": [
+              {
+                "name": "goodVibeId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the GoodVibe"
+              }
+            ]
+          },
+          "docs": "Get GoodVibe by Id"
+        },
+        {
+          "info": {
+            "name": "Get GoodVibes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/goodvibes",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "query",
+                "description": "Filter GoodVibes by team ID"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Start date for filtering GoodVibes"
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "End date for filtering GoodVibes"
+              }
+            ]
+          },
+          "docs": "Get GoodVibes with filters"
+        },
+        {
+          "info": {
+            "name": "Get GoodVibes Collections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/goodvibes/collections"
+          },
+          "docs": "Get Officevibe and Custom GoodVibes Collections"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

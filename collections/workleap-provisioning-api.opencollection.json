@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Workleap Attributes Provisioning API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "workleap-subscription-key",
+      "value": "{{workleap-subscription-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Provisioning",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Schedule a csv provisioning",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.workleap.com/public/provisioning/csv",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Process files and schedule a csv provisioning for an organization"
+        },
+        {
+          "info": {
+            "name": "Schedule a json provisioning",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.workleap.com/public/provisioning/json",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Process json payload and schedule provisioning for an organization"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

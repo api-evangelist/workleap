@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Workleap Attributes Engagement API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "workleap-subscription-key",
+      "value": "{{workleap-subscription-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Engagement",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get engagement scores for all teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/engagement/teams"
+          },
+          "docs": "Get teams engagement scores"
+        },
+        {
+          "info": {
+            "name": "Get engagement metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/engagement/metrics"
+          },
+          "docs": "Get organization engagement metrics and sub-metrics"
+        },
+        {
+          "info": {
+            "name": "Get engagement scores",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.workleap.com/public/engagement/scores"
+          },
+          "docs": "Get organization engagement scores"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
