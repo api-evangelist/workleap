@@ -97,6 +97,8 @@ apis:
   humanURL: https://docs.api.workleap.com/docs/getting-started
   baseURL: https://api.workleap.com
   tags:
+  - Group
+  tags_raw:
   - Groups
   properties:
   - type: OpenAPI
@@ -121,6 +123,8 @@ apis:
   humanURL: https://docs.api.workleap.com/docs/getting-started
   baseURL: https://api.workleap.com
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
