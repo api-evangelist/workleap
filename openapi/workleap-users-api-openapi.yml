@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Workleap Attributes Users API
-  description: 'The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform. It supports both one-time management actions and recurring HRIS-synced provisioning via JSON or CSV-based connections. Authentication uses an API key passed via the workleap-subscription-key header, and API access is available on the Pro and Enterprise subscription plans.
-
-    '
+  title: Workleap Users API
+  description: The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform.
   version: 1.0.0
   contact:
     url: https://docs.api.workleap.com/docs/getting-started
@@ -290,14 +288,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Conflict:
-      description: Conflict - resource already exists
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid API key
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
       content:
         application/json:
           schema:
@@ -314,24 +306,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
+    Conflict:
+      description: Conflict - resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    UserStateChangeRequest:
-      type: object
-      required:
-      - userIds
-      properties:
-        userIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: List of user IDs to activate or deactivate
     Error:
       type: object
       properties:
@@ -350,6 +337,36 @@ components:
                 type: string
               message:
                 type: string
+    UserStateChangeResponse:
+      type: object
+      properties:
+        succeeded:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs that were successfully updated
+        failed:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+                format: uuid
+              reason:
+                type: string
+    UserStateChangeRequest:
+      type: object
+      required:
+      - userIds
+      properties:
+        userIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of user IDs to activate or deactivate
     UserSearchRequest:
       type: object
       properties:
@@ -370,6 +387,33 @@ components:
           type: integer
           default: 25
           description: Number of results per page
+    CreateUserRequest:
+      type: object
+      required:
+      - email
+      - firstName
+      - lastName
+      properties:
+        email:
+          type: string
+          format: email
+          description: The user's email address
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
     UpdateUserRequest:
       type: object
       properties:
@@ -430,52 +474,6 @@ components:
           type: string
           format: date-time
           description: When the user was last updated
-    CreateUserRequest:
-      type: object
-      required:
-      - email
-      - firstName
-      - lastName
-      properties:
-        email:
-          type: string
-          format: email
-          description: The user's email address
-        firstName:
-          type: string
-          description: The user's first name
-        lastName:
-          type: string
-          description: The user's last name
-        jobTitle:
-          type: string
-          description: The user's job title
-        department:
-          type: string
-          description: The user's department
-        managerId:
-          type: string
-          format: uuid
-          description: The user ID of the user's manager
-    UserStateChangeResponse:
-      type: object
-      properties:
-        succeeded:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: User IDs that were successfully updated
-        failed:
-          type: array
-          items:
-            type: object
-            properties:
-              userId:
-                type: string
-                format: uuid
-              reason:
-                type: string
   securitySchemes:
     SubscriptionKey:
       type: apiKey

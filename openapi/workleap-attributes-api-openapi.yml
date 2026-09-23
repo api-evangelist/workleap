@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Workleap Attributes API
-  description: 'The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform. It supports both one-time management actions and recurring HRIS-synced provisioning via JSON or CSV-based connections. Authentication uses an API key passed via the workleap-subscription-key header, and API access is available on the Pro and Enterprise subscription plans.
-
-    '
+  description: The Workleap REST API provides programmatic access to user and group management, provisioning workflows, engagement scores, pulse survey feedback, GoodVibes recognition data, and organizational attributes across the Workleap platform.
   version: 1.0.0
   contact:
     url: https://docs.api.workleap.com/docs/getting-started
@@ -121,6 +119,31 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -151,17 +174,6 @@ components:
           description: The unique identifier of the attribute to update
         value:
           description: The new value for the attribute
-    UserAttribute:
-      type: object
-      properties:
-        attributeId:
-          type: string
-          description: The unique identifier of the attribute
-        name:
-          type: string
-          description: The name of the attribute
-        value:
-          description: The value of the attribute (type varies)
     AttributeDefinition:
       type: object
       properties:
@@ -182,31 +194,17 @@ components:
         isRequired:
           type: boolean
           description: Whether this attribute is required
-  responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    UserAttribute:
+      type: object
+      properties:
+        attributeId:
+          type: string
+          description: The unique identifier of the attribute
+        name:
+          type: string
+          description: The name of the attribute
+        value:
+          description: The value of the attribute (type varies)
   securitySchemes:
     SubscriptionKey:
       type: apiKey

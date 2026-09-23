@@ -1,0 +1,29 @@
+# Front Door AI Index — workleap — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: workleap
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: workleap.com
+  final_host: workleap.com
+  ownership: own
+  owner: workleap
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 4
+  host_score: 4
+  density: 4.71
+  words: 849
+  tiers:
+    agentic: 2
+    core: 2
+    model: 0
+  ambiguous: 2
+  top_terms:
+    agent: 2
+    AI agent: 1
+    AI: 1
+    LLMs: 1
+    MCP: 1

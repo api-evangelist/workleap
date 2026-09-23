@@ -1,13 +1,7 @@
 {
   "provider": "workleap",
   "sources": [
-    "workleap-attributes-api-openapi.yml",
-    "workleap-engagement-api-openapi.yml",
-    "workleap-feedback-api-openapi.yml",
-    "workleap-goodvibes-api-openapi.yml",
-    "workleap-groups-api-openapi.yml",
-    "workleap-provisioning-api-openapi.yml",
-    "workleap-users-api-openapi.yml"
+    "_original/workleap-workleap-api-openapi.yml"
   ],
   "outputs": [
     "workleap-attributes-api-openapi.yml",
@@ -21,6 +15,18 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "workleap-workleap-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "workleap-attributes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "workleap-engagement-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "workleap-feedback-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "workleap-goodvibes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "workleap-groups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "workleap-provisioning-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "workleap-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
