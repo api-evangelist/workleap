@@ -288,26 +288,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Conflict:
-      description: Conflict - resource already exists
       content:
         application/json:
           schema:
@@ -318,55 +300,25 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Conflict - resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-              message:
-                type: string
-    UserStateChangeResponse:
-      type: object
-      properties:
-        succeeded:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: User IDs that were successfully updated
-        failed:
-          type: array
-          items:
-            type: object
-            properties:
-              userId:
-                type: string
-                format: uuid
-              reason:
-                type: string
-    UserStateChangeRequest:
-      type: object
-      required:
-      - userIds
-      properties:
-        userIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: List of user IDs to activate or deactivate
     UserSearchRequest:
       type: object
       properties:
@@ -387,17 +339,28 @@ components:
           type: integer
           default: 25
           description: Number of results per page
-    CreateUserRequest:
+    UserStateChangeResponse:
       type: object
-      required:
-      - email
-      - firstName
-      - lastName
       properties:
-        email:
-          type: string
-          format: email
-          description: The user's email address
+        succeeded:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs that were successfully updated
+        failed:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+                format: uuid
+              reason:
+                type: string
+    UpdateUserRequest:
+      type: object
+      properties:
         firstName:
           type: string
           description: The user's first name
@@ -414,9 +377,46 @@ components:
           type: string
           format: uuid
           description: The user ID of the user's manager
-    UpdateUserRequest:
+    UserStateChangeRequest:
+      type: object
+      required:
+      - userIds
+      properties:
+        userIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of user IDs to activate or deactivate
+    Error:
       type: object
       properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    CreateUserRequest:
+      type: object
+      required:
+      - email
+      - firstName
+      - lastName
+      properties:
+        email:
+          type: string
+          format: email
+          description: The user's email address
         firstName:
           type: string
           description: The user's first name

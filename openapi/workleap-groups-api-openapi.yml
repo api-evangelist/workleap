@@ -200,18 +200,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
       content:
@@ -224,7 +212,69 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Group:
+      type: object
+      properties:
+        groupId:
+          type: string
+          format: uuid
+          description: The unique identifier of the group
+        name:
+          type: string
+          description: The name of the group
+        description:
+          type: string
+          description: The description of the group
+        memberCount:
+          type: integer
+          description: Number of members in the group
+        createdAt:
+          type: string
+          format: date-time
+          description: When the group was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the group was last updated
+    CreateGroupRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: The name of the group
+        description:
+          type: string
+          description: The description of the group
+    GroupMembershipRequest:
+      type: object
+      properties:
+        add:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to add to the group
+        remove:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to remove from the group
     Error:
       type: object
       properties:
@@ -252,30 +302,6 @@ components:
         description:
           type: string
           description: The updated description of the group
-    Group:
-      type: object
-      properties:
-        groupId:
-          type: string
-          format: uuid
-          description: The unique identifier of the group
-        name:
-          type: string
-          description: The name of the group
-        description:
-          type: string
-          description: The description of the group
-        memberCount:
-          type: integer
-          description: Number of members in the group
-        createdAt:
-          type: string
-          format: date-time
-          description: When the group was created
-        updatedAt:
-          type: string
-          format: date-time
-          description: When the group was last updated
     GroupSearchRequest:
       type: object
       properties:
@@ -290,32 +316,6 @@ components:
           type: integer
           default: 25
           description: Number of results per page
-    GroupMembershipRequest:
-      type: object
-      properties:
-        add:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: User IDs to add to the group
-        remove:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: User IDs to remove from the group
-    CreateGroupRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: The name of the group
-        description:
-          type: string
-          description: The description of the group
   securitySchemes:
     SubscriptionKey:
       type: apiKey

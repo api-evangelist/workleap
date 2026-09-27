@@ -103,18 +103,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
       content:
@@ -127,73 +115,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-              message:
-                type: string
-    FeedbackLabel:
-      type: object
-      properties:
-        labelId:
-          type: string
-          format: uuid
-          description: The unique identifier of the label
-        name:
-          type: string
-          description: The name of the label
-        color:
-          type: string
-          description: The color associated with the label
-    FeedbackSearchRequest:
-      type: object
-      properties:
-        teamName:
-          type: string
-          description: Filter by team name
-        metric:
-          type: string
-          description: Filter by engagement metric
-        tone:
-          type: string
-          enum:
-          - positive
-          - neutral
-          - negative
-          description: Filter by feedback tone
-        label:
-          type: string
-          description: Filter by custom label
-        startDate:
-          type: string
-          format: date
-          description: Start date for the date range filter
-        endDate:
-          type: string
-          format: date
-          description: End date for the date range filter
-        page:
-          type: integer
-          default: 1
-          description: Page number for pagination
-        pageSize:
-          type: integer
-          default: 25
-          description: Number of results per page
     Feedback:
       type: object
       properties:
@@ -230,6 +164,72 @@ components:
           type: string
           format: date-time
           description: When the feedback was created
+    FeedbackLabel:
+      type: object
+      properties:
+        labelId:
+          type: string
+          format: uuid
+          description: The unique identifier of the label
+        name:
+          type: string
+          description: The name of the label
+        color:
+          type: string
+          description: The color associated with the label
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    FeedbackSearchRequest:
+      type: object
+      properties:
+        teamName:
+          type: string
+          description: Filter by team name
+        metric:
+          type: string
+          description: Filter by engagement metric
+        tone:
+          type: string
+          enum:
+          - positive
+          - neutral
+          - negative
+          description: Filter by feedback tone
+        label:
+          type: string
+          description: Filter by custom label
+        startDate:
+          type: string
+          format: date
+          description: Start date for the date range filter
+        endDate:
+          type: string
+          format: date
+          description: End date for the date range filter
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        pageSize:
+          type: integer
+          default: 25
+          description: Number of results per page
   securitySchemes:
     SubscriptionKey:
       type: apiKey

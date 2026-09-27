@@ -115,12 +115,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
       content:
@@ -133,25 +127,29 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
+    GoodVibeCollection:
       type: object
       properties:
-        code:
+        collectionId:
           type: string
-          description: Error code
-        message:
+          format: uuid
+          description: The unique identifier of the collection
+        name:
           type: string
-          description: Human-readable error message
-        details:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-              message:
-                type: string
+          description: The name of the collection
+        description:
+          type: string
+          description: The description of the collection
+        isCustom:
+          type: boolean
+          description: Whether this is a custom or Officevibe collection
     GoodVibe:
       type: object
       properties:
@@ -178,22 +176,24 @@ components:
           type: string
           format: date-time
           description: When the GoodVibe was created
-    GoodVibeCollection:
+    Error:
       type: object
       properties:
-        collectionId:
+        code:
           type: string
-          format: uuid
-          description: The unique identifier of the collection
-        name:
+          description: Error code
+        message:
           type: string
-          description: The name of the collection
-        description:
-          type: string
-          description: The description of the collection
-        isCustom:
-          type: boolean
-          description: Whether this is a custom or Officevibe collection
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
   securitySchemes:
     SubscriptionKey:
       type: apiKey

@@ -78,6 +78,12 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     Forbidden:
       description: Forbidden - insufficient permissions or plan restrictions
       content:
@@ -86,12 +92,6 @@ components:
             $ref: '#/components/schemas/Error'
     BadRequest:
       description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid API key
       content:
         application/json:
           schema:
@@ -111,6 +111,25 @@ components:
           - full
           - incremental
           description: Whether to do a full sync or incremental update
+    ProvisioningResponse:
+      type: object
+      properties:
+        jobId:
+          type: string
+          format: uuid
+          description: The unique identifier of the provisioning job
+        status:
+          type: string
+          enum:
+          - scheduled
+          - processing
+          - completed
+          - failed
+          description: The current status of the provisioning job
+        scheduledAt:
+          type: string
+          format: date-time
+          description: When the provisioning was scheduled
     Error:
       type: object
       properties:
@@ -156,25 +175,6 @@ components:
           type: string
           format: uuid
           description: The user ID of the user's manager
-    ProvisioningResponse:
-      type: object
-      properties:
-        jobId:
-          type: string
-          format: uuid
-          description: The unique identifier of the provisioning job
-        status:
-          type: string
-          enum:
-          - scheduled
-          - processing
-          - completed
-          - failed
-          description: The current status of the provisioning job
-        scheduledAt:
-          type: string
-          format: date-time
-          description: When the provisioning was scheduled
   securitySchemes:
     SubscriptionKey:
       type: apiKey

@@ -120,18 +120,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
       content:
@@ -144,36 +132,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-              message:
-                type: string
-    UserAttributePatch:
-      type: object
-      required:
-      - attributeId
-      - value
-      properties:
-        attributeId:
-          type: string
-          description: The unique identifier of the attribute to update
-        value:
-          description: The new value for the attribute
     AttributeDefinition:
       type: object
       properties:
@@ -205,6 +176,35 @@ components:
           description: The name of the attribute
         value:
           description: The value of the attribute (type varies)
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    UserAttributePatch:
+      type: object
+      required:
+      - attributeId
+      - value
+      properties:
+        attributeId:
+          type: string
+          description: The unique identifier of the attribute to update
+        value:
+          description: The new value for the attribute
   securitySchemes:
     SubscriptionKey:
       type: apiKey

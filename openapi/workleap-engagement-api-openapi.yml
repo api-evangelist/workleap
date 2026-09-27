@@ -83,19 +83,54 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Unauthorized - missing or invalid API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    TeamEngagementScore:
+      type: object
+      properties:
+        teamId:
+          type: string
+          format: uuid
+          description: The unique identifier of the team
+        teamName:
+          type: string
+          description: The name of the team
+        score:
+          type: number
+          format: float
+          description: The engagement score (0-10)
+        responseRate:
+          type: number
+          format: float
+          description: The survey response rate (0-100)
+        participantCount:
+          type: integer
+          description: Number of participants in the team
+    OrganizationEngagementScores:
+      type: object
+      properties:
+        organizationScore:
+          type: number
+          format: float
+          description: The overall organization engagement score (0-10)
+        responseRate:
+          type: number
+          format: float
+          description: The organization-wide survey response rate (0-100)
+        participantCount:
+          type: integer
+          description: Total number of participants
     Error:
       type: object
       properties:
@@ -114,20 +149,6 @@ components:
                 type: string
               message:
                 type: string
-    OrganizationEngagementScores:
-      type: object
-      properties:
-        organizationScore:
-          type: number
-          format: float
-          description: The overall organization engagement score (0-10)
-        responseRate:
-          type: number
-          format: float
-          description: The organization-wide survey response rate (0-100)
-        participantCount:
-          type: integer
-          description: Total number of participants
     EngagementMetric:
       type: object
       properties:
@@ -153,27 +174,6 @@ components:
               score:
                 type: number
                 format: float
-    TeamEngagementScore:
-      type: object
-      properties:
-        teamId:
-          type: string
-          format: uuid
-          description: The unique identifier of the team
-        teamName:
-          type: string
-          description: The name of the team
-        score:
-          type: number
-          format: float
-          description: The engagement score (0-10)
-        responseRate:
-          type: number
-          format: float
-          description: The survey response rate (0-100)
-        participantCount:
-          type: integer
-          description: Number of participants in the team
   securitySchemes:
     SubscriptionKey:
       type: apiKey
