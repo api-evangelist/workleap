@@ -199,32 +199,21 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    GroupSearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Search query for group name
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        pageSize:
+          type: integer
+          default: 25
+          description: Number of results per page
     Group:
       type: object
       properties:
@@ -260,21 +249,6 @@ components:
         description:
           type: string
           description: The description of the group
-    GroupMembershipRequest:
-      type: object
-      properties:
-        add:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: User IDs to add to the group
-        remove:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: User IDs to remove from the group
     Error:
       type: object
       properties:
@@ -302,20 +276,46 @@ components:
         description:
           type: string
           description: The updated description of the group
-    GroupSearchRequest:
+    GroupMembershipRequest:
       type: object
       properties:
-        query:
-          type: string
-          description: Search query for group name
-        page:
-          type: integer
-          default: 1
-          description: Page number for pagination
-        pageSize:
-          type: integer
-          default: 25
-          description: Number of results per page
+        add:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to add to the group
+        remove:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to remove from the group
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     SubscriptionKey:
       type: apiKey

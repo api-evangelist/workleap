@@ -115,14 +115,14 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   responses:
-    NotFound:
-      description: Not found - the requested resource does not exist
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid API key
+    NotFound:
+      description: Not found - the requested resource does not exist
       content:
         application/json:
           schema:
@@ -150,6 +150,24 @@ components:
         isCustom:
           type: boolean
           description: Whether this is a custom or Officevibe collection
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
     GoodVibe:
       type: object
       properties:
@@ -176,24 +194,6 @@ components:
           type: string
           format: date-time
           description: When the GoodVibe was created
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-              message:
-                type: string
   securitySchemes:
     SubscriptionKey:
       type: apiKey

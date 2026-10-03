@@ -287,38 +287,45 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: Not found - the requested resource does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized - missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden - insufficient permissions or plan restrictions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Conflict:
-      description: Conflict - resource already exists
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    UpdateUserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
+    UserStateChangeResponse:
+      type: object
+      properties:
+        succeeded:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs that were successfully updated
+        failed:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+                format: uuid
+              reason:
+                type: string
     UserSearchRequest:
       type: object
       properties:
@@ -339,55 +346,6 @@ components:
           type: integer
           default: 25
           description: Number of results per page
-    UserStateChangeResponse:
-      type: object
-      properties:
-        succeeded:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: User IDs that were successfully updated
-        failed:
-          type: array
-          items:
-            type: object
-            properties:
-              userId:
-                type: string
-                format: uuid
-              reason:
-                type: string
-    UpdateUserRequest:
-      type: object
-      properties:
-        firstName:
-          type: string
-          description: The user's first name
-        lastName:
-          type: string
-          description: The user's last name
-        jobTitle:
-          type: string
-          description: The user's job title
-        department:
-          type: string
-          description: The user's department
-        managerId:
-          type: string
-          format: uuid
-          description: The user ID of the user's manager
-    UserStateChangeRequest:
-      type: object
-      required:
-      - userIds
-      properties:
-        userIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: List of user IDs to activate or deactivate
     Error:
       type: object
       properties:
@@ -406,6 +364,17 @@ components:
                 type: string
               message:
                 type: string
+    UserStateChangeRequest:
+      type: object
+      required:
+      - userIds
+      properties:
+        userIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: List of user IDs to activate or deactivate
     CreateUserRequest:
       type: object
       required:
@@ -474,6 +443,37 @@ components:
           type: string
           format: date-time
           description: When the user was last updated
+  responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found - the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Conflict - resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     SubscriptionKey:
       type: apiKey
