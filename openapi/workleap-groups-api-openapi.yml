@@ -200,20 +200,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    GroupSearchRequest:
-      type: object
-      properties:
-        query:
-          type: string
-          description: Search query for group name
-        page:
-          type: integer
-          default: 1
-          description: Page number for pagination
-        pageSize:
-          type: integer
-          default: 25
-          description: Number of results per page
     Group:
       type: object
       properties:
@@ -238,6 +224,15 @@ components:
           type: string
           format: date-time
           description: When the group was last updated
+    UpdateGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The updated name of the group
+        description:
+          type: string
+          description: The updated description of the group
     CreateGroupRequest:
       type: object
       required:
@@ -267,15 +262,6 @@ components:
                 type: string
               message:
                 type: string
-    UpdateGroupRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The updated name of the group
-        description:
-          type: string
-          description: The updated description of the group
     GroupMembershipRequest:
       type: object
       properties:
@@ -291,13 +277,21 @@ components:
             type: string
             format: uuid
           description: User IDs to remove from the group
+    GroupSearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Search query for group name
+        page:
+          type: integer
+          default: 1
+          description: Page number for pagination
+        pageSize:
+          type: integer
+          default: 25
+          description: Number of results per page
   responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
       content:
@@ -312,6 +306,12 @@ components:
             $ref: '#/components/schemas/Error'
     Forbidden:
       description: Forbidden - insufficient permissions or plan restrictions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
       content:
         application/json:
           schema:

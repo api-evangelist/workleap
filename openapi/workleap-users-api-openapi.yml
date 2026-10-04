@@ -288,25 +288,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    UpdateUserRequest:
-      type: object
-      properties:
-        firstName:
-          type: string
-          description: The user's first name
-        lastName:
-          type: string
-          description: The user's last name
-        jobTitle:
-          type: string
-          description: The user's job title
-        department:
-          type: string
-          description: The user's department
-        managerId:
-          type: string
-          format: uuid
-          description: The user ID of the user's manager
     UserStateChangeResponse:
       type: object
       properties:
@@ -346,24 +327,6 @@ components:
           type: integer
           default: 25
           description: Number of results per page
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-              message:
-                type: string
     UserStateChangeRequest:
       type: object
       required:
@@ -375,17 +338,9 @@ components:
             type: string
             format: uuid
           description: List of user IDs to activate or deactivate
-    CreateUserRequest:
+    UpdateUserRequest:
       type: object
-      required:
-      - email
-      - firstName
-      - lastName
       properties:
-        email:
-          type: string
-          format: email
-          description: The user's email address
         firstName:
           type: string
           description: The user's first name
@@ -443,13 +398,52 @@ components:
           type: string
           format: date-time
           description: When the user was last updated
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    CreateUserRequest:
+      type: object
+      required:
+      - email
+      - firstName
+      - lastName
+      properties:
+        email:
+          type: string
+          format: email
+          description: The user's email address
+        firstName:
+          type: string
+          description: The user's first name
+        lastName:
+          type: string
+          description: The user's last name
+        jobTitle:
+          type: string
+          description: The user's job title
+        department:
+          type: string
+          description: The user's department
+        managerId:
+          type: string
+          format: uuid
+          description: The user ID of the user's manager
   responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: Not found - the requested resource does not exist
       content:
@@ -462,14 +456,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Conflict - resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     Forbidden:
       description: Forbidden - insufficient permissions or plan restrictions
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Conflict:
-      description: Conflict - resource already exists
+    Unauthorized:
+      description: Unauthorized - missing or invalid API key
       content:
         application/json:
           schema:
