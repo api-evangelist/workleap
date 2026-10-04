@@ -156,6 +156,9 @@ apis:
   - type: Documentation
     url: https://docs.api.workleap.com/docs/getting-started
 common:
+  - type: CapabilityMap
+    url: capabilities/workleap-capability-edges.yml
+    name: Workleap Business Capability Map
   - type: AgenticAccess
     url: agentic-access/workleap-agentic-access.yml
   - type: TrustCenter

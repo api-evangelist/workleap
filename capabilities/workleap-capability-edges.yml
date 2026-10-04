@@ -1,0 +1,46 @@
+slug: workleap
+provider: Workleap
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Engagement
+  spec_file: workleap-engagement-api-openapi.yml
+  capability_id: BC-300.60
+  capability_id_l1: BC-300
+  capability_name: Employee Experience Management
+  confidence: 0.85
+  evidence: '''getAllEngagementScores  Get engagement scores for all teams'', ''getEngagementMetrics'',
+    schema ''TeamEngagementScore, OrganizationEngagementScores'''
+  reason: Measurement of employee engagement across teams and the organization is squarely Employee Experience
+    Management.
+- tag: Feedback
+  spec_file: workleap-feedback-api-openapi.yml
+  capability_id: BC-300.60
+  capability_id_l1: BC-300
+  capability_name: Employee Experience Management
+  confidence: 0.78
+  evidence: '''searchFeedbacks  Search feedbacks'', schema ''Feedback, FeedbackLabel''; description ''pulse
+    survey feedback'''
+  reason: Employee pulse-survey feedback retrieval and labelling supports engagement/voice-of-employee
+    programmes, i.e. Employee Experience Management — not customer feedback, given the HR platform context.
+- tag: GoodVibes
+  spec_file: workleap-goodvibes-api-openapi.yml
+  capability_id: BC-300.60
+  capability_id_l1: BC-300
+  capability_name: Employee Experience Management
+  confidence: 0.7
+  evidence: '''getGoodVibes  Get GoodVibes'', ''getGoodVibesCollections''; description ''GoodVibes recognition
+    data'''
+  reason: Peer recognition data on an employee experience platform; recognition programmes sit under Employee
+    Experience Management, though an argument exists for Compensation & Benefits if recognition carries
+    rewards, hence moderate confidence.
