@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 specificationVersion: "0.1"
 name: Workleap Plans and Pricing
 description: >
@@ -82,3 +86,40 @@ plans:
       - Decision assistance
       - Meeting intelligence
       - Advanced memory
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - negotiated
+  - subscription
+  units:
+  - negotiated
+  plans:
+  - name: Standard
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods: []
+  - name: Pro
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods: []
+  - name: Enterprise
+    access: other
+    model: negotiated
+    model_how: derived
+    units:
+    - negotiated
+    periods: []
+  - name: Manager Agent Add-On
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods: []

@@ -200,6 +200,8 @@ common:
   - type: JSONSchema
     url: json-schema/workleap-feedback.json
 
+  - type: SpectralRules
+    url: https://github.com/workleap/wl-api-guidelines/blob/764bd20880f60765a48197b7ee0afca9bc0bd2bd/.workleap.rules.yaml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

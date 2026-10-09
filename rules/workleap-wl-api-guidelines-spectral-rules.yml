@@ -1,0 +1,203 @@
+# harvested from https://github.com/workleap/wl-api-guidelines/blob/764bd20880f60765a48197b7ee0afca9bc0bd2bd/.workleap.rules.yaml on 2026-10-09 — a Spectral ruleset published in the provider's own GitHub repository (workleap/wl-api-guidelines); found by GitHub code search, fetched verbatim
+x-method: harvested
+x-stamped: 2026-10-09
+x-source-url: https://github.com/workleap/wl-api-guidelines/blob/764bd20880f60765a48197b7ee0afca9bc0bd2bd/.workleap.rules.yaml
+extends: [[spectral:oas, off]]
+documentationUrl: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets
+rules:
+  duplicated-entry-in-enum: true
+  no-eval-in-markdown: true
+  no-script-tags-in-markdown: true
+  openapi-tags-uniqueness: true
+  operation-operationId: true
+  operation-operationId-valid-in-url: true
+  operation-operationId-unique: true
+  operation-success-response: true
+  path-keys-no-trailing-slash: true
+  path-params: true
+  typed-enum: true
+  oas3-schema: true
+  oas3-operation-security-defined: true
+
+  schema-ids-must-have-alphanumeric-characters-only:
+    description: 'All schema ids must only contain alphanumeric characters. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schema-ids-must-have-alphanumeric-characters-only'
+    given: "$.components.schemas"
+    severity: error
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        match: '^[a-zA-Z0-9]+$'
+
+  # For backward compatibility
+  schemas-properties-must-have-a-type:
+    description: "All schemas properties must have a type or schema reference. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schemas-properties-must-have-a-type-and-path-schema-properties-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $..schemas.*.properties.*
+    then: &type-or-ref-check
+      - function: truthy
+      - function: schema
+        functionOptions:
+          schema:
+            anyOf:
+              - required: ["type"]
+              - required: ["$ref"]
+
+  schemas-properties-must-have-a-type-backend:
+    description: "All schemas properties must have a type or schema reference. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schemas-properties-must-have-a-type-and-path-schema-properties-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $..schemas.*.properties.*
+    then: *type-or-ref-check
+
+  schemas-properties-must-have-a-type-frontend:
+    description: "All schemas properties must have a type, schema reference, or composition keyword (allOf/anyOf/oneOf). Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schemas-properties-must-have-a-type-and-path-schema-properties-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $..schemas.*.properties.*
+    then: &type-or-composition-check
+      - function: truthy
+      - function: schema
+        functionOptions:
+          schema:
+            anyOf:
+              - required: ["type"]
+              - required: ["$ref"]
+              - required: ["allOf"]
+              - required: ["anyOf"]
+              - required: ["oneOf"]
+
+  # For backward compatibility
+  path-schema-properties-must-have-a-type:
+    description: "All path schema properties must have a type or schema reference. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schemas-properties-must-have-a-type-and-path-schema-properties-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $..schema.properties.*
+    then: *type-or-ref-check
+
+  path-schema-properties-must-have-a-type-backend:
+    description: "All path schema properties must have a type or schema reference. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schemas-properties-must-have-a-type-and-path-schema-properties-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $..schema.properties.*
+    then: *type-or-ref-check
+
+  path-schema-properties-must-have-a-type-frontend:
+    description: "All path schema properties must have a type, schema reference, or composition keyword (allOf/anyOf/oneOf). Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schemas-properties-must-have-a-type-and-path-schema-properties-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $..schema.properties.*
+    then: *type-or-composition-check
+
+  # For backward compatibility
+  schema-object-must-have-a-type:
+    description: "All schema objects must have a type or schema reference. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schema-object-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $.components.schemas.*
+    then: *type-or-ref-check
+
+  schema-object-must-have-a-type-backend:
+    description: "All schema objects must have a type or schema reference. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schema-object-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $.components.schemas.*
+    then: *type-or-ref-check
+
+  schema-object-must-have-a-type-frontend:
+    description: "All schema objects must have a type, schema reference, or composition keyword (allOf/anyOf/oneOf). Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schema-object-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $.components.schemas.*
+    then: *type-or-composition-check
+
+  # For backward compatibility
+  items-must-have-a-type:
+    description: "All items must have a type or schema reference. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#items-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $.components.schemas..items
+    then: *type-or-ref-check
+
+  items-must-have-a-type-backend:
+    description: "All items must have a type or schema reference. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#items-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $.components.schemas..items
+    then: *type-or-ref-check
+
+  items-must-have-a-type-frontend:
+    description: "All items must have a type, schema reference, or composition keyword (allOf/anyOf/oneOf). Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#items-must-have-a-type"
+    recommended: true
+    severity: warn
+    given: $.components.schemas..items
+    then: *type-or-composition-check
+
+  schema-name-length-must-be-short:
+    description: "Schema name must not be too long to support client generation. Current limitation comes from Ruby packages which uses tar and has a limit of 100 characters. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#schema-name-length-must-be-short"
+    given: $.components.schemas[*]~
+    then:
+      function: length
+      functionOptions:
+        max: 95
+
+  must-not-use-base-server-url:
+    description: "Must not use base server url in spec to be able to generate a single client compatible with multiple environments. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#must-not-use-base-server-url"
+    severity: warn
+    given: $.servers[*].url
+    then:
+      function: falsy
+
+  must-accept-content-types:
+    description: "All endpoint bodies MUST accept the header with (one of) Content-Type: application/json, multipart/form-data, application/octet-stream. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#must-accept-content-types"
+    message: "{{description}}"
+    severity: warn
+    given: $.paths[*].*.requestBody.content
+    then:
+      field: "@key"
+      function: enumeration
+      functionOptions:
+        values:
+          -  application/json
+          -  multipart/form-data
+          -  application/octet-stream
+
+  must-return-content-types:
+    description: "Endpoint bodies for 200 responses MUST return the header with (one of) Content-Type: application/json, image/png, application/octet-stream. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#must-return-content-types"
+    message: "{{description}}"
+    severity: warn
+    given: $.paths[*].*.responses['200'].content
+    then:
+      field: "@key"
+      function: enumeration
+      functionOptions:
+        values:
+          -  application/json
+          -  image/png
+          -  application/octet-stream
+
+  must-support-client-credentials-oauth2:
+    description: "Contract must support client credentials with oauth2. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#must-support-client-credentials-oauth2"
+    recommended: true
+    severity: warn
+    given: $.components.securitySchemes.*
+    then:
+      field: type
+      function: enumeration
+      functionOptions:
+        values:
+          - oauth2
+
+  must-use-get-post-methods:
+    description: "BFF API endpoints must only use GET or POST methods. Refer to: https://gsoftdev.atlassian.net/wiki/spaces/TEC/pages/3858235678/IDP+OpenAPI+Rulesets#must-use-get-post-methods"
+    recommended: true
+    severity: error
+    given: $.paths[*]
+    then:
+      field: "@key"
+      function: enumeration
+      functionOptions:
+        values:
+          - get
+          - post
