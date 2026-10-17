@@ -83,6 +83,52 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
+    EngagementMetric:
+      type: object
+      properties:
+        metricId:
+          type: string
+          description: The unique identifier of the metric
+        name:
+          type: string
+          description: The name of the metric
+        score:
+          type: number
+          format: float
+          description: The metric score (0-10)
+        subMetrics:
+          type: array
+          items:
+            type: object
+            properties:
+              subMetricId:
+                type: string
+              name:
+                type: string
+              score:
+                type: number
+                format: float
+    TeamEngagementScore:
+      type: object
+      properties:
+        teamId:
+          type: string
+          format: uuid
+          description: The unique identifier of the team
+        teamName:
+          type: string
+          description: The name of the team
+        score:
+          type: number
+          format: float
+          description: The engagement score (0-10)
+        responseRate:
+          type: number
+          format: float
+          description: The survey response rate (0-100)
+        participantCount:
+          type: integer
+          description: Number of participants in the team
     OrganizationEngagementScores:
       type: object
       properties:
@@ -115,52 +161,6 @@ components:
                 type: string
               message:
                 type: string
-    TeamEngagementScore:
-      type: object
-      properties:
-        teamId:
-          type: string
-          format: uuid
-          description: The unique identifier of the team
-        teamName:
-          type: string
-          description: The name of the team
-        score:
-          type: number
-          format: float
-          description: The engagement score (0-10)
-        responseRate:
-          type: number
-          format: float
-          description: The survey response rate (0-100)
-        participantCount:
-          type: integer
-          description: Number of participants in the team
-    EngagementMetric:
-      type: object
-      properties:
-        metricId:
-          type: string
-          description: The unique identifier of the metric
-        name:
-          type: string
-          description: The name of the metric
-        score:
-          type: number
-          format: float
-          description: The metric score (0-10)
-        subMetrics:
-          type: array
-          items:
-            type: object
-            properties:
-              subMetricId:
-                type: string
-              name:
-                type: string
-              score:
-                type: number
-                format: float
   responses:
     Forbidden:
       description: Forbidden - insufficient permissions or plan restrictions

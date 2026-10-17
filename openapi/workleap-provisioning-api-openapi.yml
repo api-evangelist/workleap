@@ -78,38 +78,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
-    JsonProvisioningRequest:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreateUserRequest'
-          description: List of users to provision
-        syncMode:
-          type: string
-          enum:
-          - full
-          - incremental
-          description: Whether to do a full sync or incremental update
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-              message:
-                type: string
     CreateUserRequest:
       type: object
       required:
@@ -156,6 +124,38 @@ components:
           type: string
           format: date-time
           description: When the provisioning was scheduled
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    JsonProvisioningRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateUserRequest'
+          description: List of users to provision
+        syncMode:
+          type: string
+          enum:
+          - full
+          - incremental
+          description: Whether to do a full sync or incremental update
   responses:
     BadRequest:
       description: Bad request - invalid parameters or request body

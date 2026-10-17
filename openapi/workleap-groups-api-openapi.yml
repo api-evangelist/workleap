@@ -233,17 +233,21 @@ components:
         description:
           type: string
           description: The updated description of the group
-    CreateGroupRequest:
+    GroupMembershipRequest:
       type: object
-      required:
-      - name
       properties:
-        name:
-          type: string
-          description: The name of the group
-        description:
-          type: string
-          description: The description of the group
+        add:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to add to the group
+        remove:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: User IDs to remove from the group
     Error:
       type: object
       properties:
@@ -262,21 +266,6 @@ components:
                 type: string
               message:
                 type: string
-    GroupMembershipRequest:
-      type: object
-      properties:
-        add:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: User IDs to add to the group
-        remove:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: User IDs to remove from the group
     GroupSearchRequest:
       type: object
       properties:
@@ -291,15 +280,26 @@ components:
           type: integer
           default: 25
           description: Number of results per page
+    CreateGroupRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: The name of the group
+        description:
+          type: string
+          description: The description of the group
   responses:
-    NotFound:
-      description: Not found - the requested resource does not exist
+    BadRequest:
+      description: Bad request - invalid parameters or request body
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request - invalid parameters or request body
+    NotFound:
+      description: Not found - the requested resource does not exist
       content:
         application/json:
           schema:
