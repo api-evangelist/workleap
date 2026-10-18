@@ -52,7 +52,7 @@
     - connectors/applications/workleap-officevibe
     vendor_link: https://workleap.com/officevibe/
     builder: Fivetran
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: workleap-microsoft-teams-own
   label: Microsoft Teams (own)
