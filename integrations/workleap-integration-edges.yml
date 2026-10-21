@@ -104,6 +104,23 @@ edges:
   detected: '2026-10-18'
   detected_by: mirror-platform-listings.py
   category: Zoom app
+- partner_name: HubSpot (own)
+  partner: hubspot
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/workleap-agent
+  mirror_of: hubspot/integrations/hubspot-integration-edges.yml
+  apps:
+  - Workleap Agent
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: CONNECTOR
 method: searched
 checked:
 - https://fivetran.com/docs-sitemap.xml
@@ -112,5 +129,6 @@ checked:
 - microsoft-teams/integrations/microsoft-teams-integration-edges.yml
 - slack/integrations/slack-integration-edges.yml
 - zoom/integrations/zoom-integration-edges.yml
+- hubspot/integrations/hubspot-integration-edges.yml
 source:
 - https://zapier.com/api/v4/apps/

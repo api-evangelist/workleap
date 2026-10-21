@@ -93,3 +93,16 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: workleap-hubspot-own
+  label: HubSpot (own)
+  partner: hubspot
+  partner_name: HubSpot (own)
+  category: CONNECTOR
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/workleap-agent
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
